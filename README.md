@@ -1,7 +1,7 @@
 # Algorithms
 ___
 
-There are many repositories under my GitHub account. This repository serves as a common package for the implementation of various algorithms. The following algorithms have been implemented in this repo.
+There are many repositories under my GitHub account. This repository serves as a common package for the implementation of various algorithms. The following algorithms will be/have been implemented in this repo.
 
 #### Algorithms Implemented
 

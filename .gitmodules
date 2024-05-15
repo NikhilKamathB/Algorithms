@@ -1,0 +1,6 @@
+[submodule "third_party/eigen"]
+	path = third_party/eigen
+	url = git@gitlab.com:libeigen/eigen.git
+[submodule "third_party/plog"]
+	path = third_party/plog
+	url = git@github.com:SergiusTheBest/plog.git
