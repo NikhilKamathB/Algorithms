@@ -1,0 +1,79 @@
+/**
+ * @file node.cpp
+ * @brief Contains the implementation of the `Node` class.
+ */
+
+#include <search/node/node.h>
+
+namespace search
+{
+    template <typename T, unsigned int D>
+    boost::uuids::random_generator Node<T, D>::uuid_generator_;
+
+    template <typename T, unsigned int D>
+    Node<T, D>::Node(const NodeValue<T, D> &node_value, const std::string &name)
+        : node_value_(node_value),
+          name_(name),
+          uuid_(uuid_generator_()) {}
+
+    template <typename T, unsigned int D>
+    Node<T, D>::~Node() {}
+
+    template <typename T, unsigned int D>
+    const std::string &Node<T, D>::getName() const
+    {
+        return name_;
+    }
+
+    template <typename T, unsigned int D>
+    const std::vector<Node<T, D> *> &Node<T, D>::getNeighbors() const
+    {
+        return neighbors_;
+    }
+
+    template <typename T, unsigned int D>
+    const NodeValue<T, D> &Node<T, D>::getNodeValue() const
+    {
+        return node_value_;
+    }
+
+    template <typename T, unsigned int D>
+    void Node<T, D>::addNeighbor(const Node<T, D> &neighbor)
+    {
+        neighbors_.push_back(&neighbor);
+    }
+
+    template <typename T, unsigned int D>
+    void Node<T, D>::setName(const std::string &name)
+    {
+        name_ = name;
+    }
+
+    template <typename T, unsigned int D>
+    std::ostream &operator<<(std::ostream &os, const NodeValue<T, D> &node_value)
+    {
+        os << node_value.value;
+        return os;
+    }
+
+    template <typename T, unsigned int D>
+    std::ostream &operator<<(std::ostream &os, const Node<T, D> &node)
+    {
+        os << "Node[" << node.name_ << "]: ";
+        os << node.node_value_ << std::endl;
+        os << "Neighbors[";
+        for (const Node<T, D> *neighbor : node.neighbors_)
+        {
+            os << neighbor->name_ << ", ";
+        }
+        os << "]" << std::endl;
+        return os;
+    }
+
+    template <typename T, unsigned int D>
+    const bool operator==(const Node<T, D> &lhs, const Node<T, D> &rhs)
+    {
+        return lhs.uuid_ == rhs.uuid_;
+    }
+
+} // namespace search
