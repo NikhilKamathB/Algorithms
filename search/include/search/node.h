@@ -6,8 +6,7 @@
  * @brief Contains the definition of the `Node` class.
  */
 
-#include <utils.h>
-#include <Eigen/Dense>
+#include <search/utils.h>
 
 namespace search
 {
@@ -40,8 +39,8 @@ namespace search
             // Flag to use the node value or not for computing the cost.
             bool use_node_value_;
 
-            // Cost of the path from previous node to the current node.
-            T cost_;
+            // Neighboring nodes.
+            std::vector<Node<T, D>> neighbors_;
 
         public:
             /**
@@ -56,9 +55,9 @@ namespace search
              * @param use_node_value - flag to use the node value or not for computing the cost.
             */
             Node(const std::string& name = "",
+                 const RowVector& value = RowVector::Zero(),
                  const DistanceMetric& distance_metric = DistanceMetric::EUCLIDEAN,
-                 const bool& use_node_value = true, 
-                 const RowVector &value = RowVector::Zero());
+                 const bool& use_node_value = true);
 
             /**
              * @brief Destructor of the `Node` class.
@@ -103,16 +102,22 @@ namespace search
             const T getDistance(Node<T, D>& next_node) const;
 
             /**
-             * @brief Compute the cost of the path from this node to the next neighboring node.
+             * @brief Get/Compute the cost of the path from this node to the next neighboring node.
              * @param next_node - next neighboring node.
              */
-            void computeCost(Node<T, D> &next_node);
+            const T getCost(Node<T, D>& next_node) const;
+
+            /** 
+             * @brief Add a neighbor to the node.
+             * @param neighbor - neighbor to add to the node.
+            */
+            void addNeighbor(Node<T, D>& neighbor);
 
             /**
-             * @brief Get the cost of the path from this node to the next neighboring node.
-             * @return T - cost of the path from this node to the next neighboring node.
+             * @brief Get the neighbors of the node.
+             * @return std::vector<Node<T, D>> - neighbors of the node.
              */
-            const T getCost() const;
+            const std::vector<Node<T, D>> getNeighbors() const;
     };
     
 } // namespace search

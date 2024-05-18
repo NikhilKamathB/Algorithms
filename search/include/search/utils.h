@@ -6,6 +6,8 @@
  * @brief Contains utility functions/definitions used in the search library.
  */
 
+#include <Eigen/Dense>
+
 namespace search
 {
     /**
