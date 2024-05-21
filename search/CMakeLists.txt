@@ -21,13 +21,19 @@ add_library(search_node SHARED
 target_include_directories(search_node PUBLIC include ${EIGEN3_INCLUDE_DIR})
 target_link_libraries(search_node PUBLIC plog)
 
+# DFS
+add_library(search_dfs SHARED
+    src/search/dfs.cpp)
+target_include_directories(search_dfs PUBLIC include)
+target_link_libraries(search_dfs PUBLIC plog search_node)
+
 # Environment
 add_library(search_environment SHARED
     src/environment.cpp)
 target_include_directories(search_environment PUBLIC include ${EIGEN3_INCLUDE_DIR})
-target_link_libraries(search_environment PUBLIC plog search_node)
+target_link_libraries(search_environment PUBLIC plog search_node search_dfs)
 
 # __main__
 add_executable(search_main __main__.cpp)
-target_link_libraries(search_main PRIVATE search_node search_environment)
+target_link_libraries(search_main PRIVATE search_environment)
 target_compile_definitions(search_main PRIVATE FLOATING_POINT_TYPE=double DIM=1U)

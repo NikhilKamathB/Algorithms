@@ -19,6 +19,12 @@ namespace search
     Node<T, D>::~Node() {}
 
     template <typename T, unsigned int D>
+    const bool Node<T, D>::operator==(const Node<T, D>& node) const
+    {
+        return (name_ == node.getName() && value_ == node.getValue());
+    }
+
+    template <typename T, unsigned int D>
     const std::string Node<T, D>::getName() const
     {
         return name_;
@@ -71,11 +77,11 @@ namespace search
     template <typename T, unsigned int D>
     void Node<T, D>::addNeighbor(Node<T, D>& neighbor)
     {
-        neighbors_.push_back(neighbor);
+        neighbors_.push_back(&neighbor);
     }
 
     template <typename T, unsigned int D>
-    const std::vector<Node<T, D>> Node<T, D>::getNeighbors() const
+    const std::vector<const Node<T, D>*> Node<T, D>::getNeighbors() const
     {
         return neighbors_;
     }

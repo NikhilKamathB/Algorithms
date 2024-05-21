@@ -111,6 +111,12 @@ namespace search
             const std::vector<Node<T, D>> getNodes() const;
 
             /**
+             * @brief Get the node at index `index` in the environment.
+             * @param index - Node at index `index` in the environment.
+             */
+            const Node<T, D>& getNode(const std::size_t& index) const;
+
+            /**
              * @brief Get the edges between the nodes in the environment.
              * @return Edges between the nodes in the environment.
              */
@@ -121,8 +127,8 @@ namespace search
              * @param node_values - values of the nodes in the environment.
              * @param node_names - names of the nodes in the environment [optional].
              */
-            void create(const std::vector<RowVector>& node_values,
-                const std::vector<std::string>& node_names);
+            void create(const std::vector<RowVector>& node_values = std::vector<RowVector>(),
+                const std::vector<std::string>& node_names = std::vector<std::string>());
 
             /**
              * @brief Perform space search in the environment.
@@ -134,7 +140,7 @@ namespace search
             const std::vector<Node<T, D>> search(
                 const Node<T, D>& start_node,
                 const Node<T, D>& goal_node,
-                const SearchAlgorithm& method = SearchAlgorithm::A_STAR_SEARCH);
+                const SearchAlgorithm& method = SearchAlgorithm::DEPTH_FIRST_SEARCH);
     };
 
 } // namespace search

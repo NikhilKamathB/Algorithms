@@ -3,6 +3,7 @@
  * @brief Contains the implementation of the `Environment` class.
  */
 
+#include <search/search/dfs.h>
 #include <search/environment.h>
 
 namespace search
@@ -17,7 +18,11 @@ namespace search
         const bool& bidirectional)
         : num_nodes_(num_nodes), edges_(edges), 
         distance_metric_(distance_metric), node_prefix_name_(node_prefix_name), 
-        use_node_value_(use_node_value), bidirectional_(bidirectional) {}
+        use_node_value_(use_node_value), bidirectional_(bidirectional) {
+            nodes_.reserve(num_nodes_);
+            node_names_.reserve(num_nodes_);
+            node_values_.reserve(num_nodes_);
+        }
 
     template <typename T, unsigned int D>
     Environment<T, D>::~Environment() {}
@@ -31,7 +36,7 @@ namespace search
         }
         else {
             for (std::size_t i = 0; i < num_nodes_; ++i) {
-                node_names_.push_back(node_prefix_name_ + std::to_string(i));
+                node_names_.emplace_back(node_prefix_name_ + std::to_string(i));
             }
         }
     }
@@ -45,7 +50,7 @@ namespace search
         }
         else {
             for (std::size_t i = 0; i < num_nodes_; ++i) {
-                node_values_.push_back(RowVector::Zero());
+                node_values_.emplace_back(RowVector::Zero());
             }
         }
     }
@@ -64,7 +69,7 @@ namespace search
     void Environment<T, D>::createNodes()
     {
         for (std::size_t i = 0; i < num_nodes_; ++i) {
-            nodes_.push_back(
+            nodes_.emplace_back(
                 Node<T, D>(node_names_[i], node_values_[i], distance_metric_, use_node_value_)
             );
         }
@@ -74,11 +79,9 @@ namespace search
     void Environment<T, D>::createEdges()
     {
         for (const std::pair<std::size_t, std::size_t>& edge : edges_) {
-            Node<T, D> node_1 = nodes_[edge.first];
-            Node<T, D> node_2 = nodes_[edge.second];
-            node_1.addNeighbor(node_2);
+            nodes_[edge.first].addNeighbor(nodes_[edge.second]);
             if (bidirectional_) {
-                node_2.addNeighbor(node_1);
+                nodes_[edge.second].addNeighbor(nodes_[edge.first]);
             }
         }
     }
@@ -96,6 +99,12 @@ namespace search
     }
 
     template <typename T, unsigned int D>
+    const Node<T, D>& Environment<T, D>::getNode(const std::size_t& index) const
+    {
+        return nodes_[index];
+    }
+
+    template <typename T, unsigned int D>
     const std::vector<std::pair<std::size_t, std::size_t>> Environment<T, D>::getEdges() const
     {
         return edges_;
@@ -104,7 +113,8 @@ namespace search
     template <typename T, unsigned int D>
     void Environment<T, D>::create(const std::vector<RowVector>& node_values,
         const std::vector<std::string>& node_names)
-    {
+    {   
+        this->initializeNodeItems(node_values, node_names);
         this->createNodes();
         this->createEdges();
     }
@@ -114,6 +124,19 @@ namespace search
         const Node<T, D>& start_node,
         const Node<T, D>& goal_node,
         const SearchAlgorithm& search_algorithm) {
+        switch (search_algorithm)
+        {
+            case SearchAlgorithm::DEPTH_FIRST_SEARCH:
+            {
+                DFS<T, D> dfs;
+                return dfs.solve(start_node, goal_node);
+            }
+            default:
+            {
+                DFS<T, D> dfs;
+                return dfs.solve(start_node, goal_node);
+            }
+        }
         return nodes_;
     }
 

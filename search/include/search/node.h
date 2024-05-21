@@ -40,7 +40,7 @@ namespace search
             bool use_node_value_;
 
             // Neighboring nodes.
-            std::vector<Node<T, D>> neighbors_;
+            std::vector<const Node<T, D>*> neighbors_;
 
         public:
             /**
@@ -63,6 +63,13 @@ namespace search
              * @brief Destructor of the `Node` class.
             */
             ~Node();
+
+            /**
+             * @brief Checks whether *this is equal to the other node (on rhs).
+             * @param rhs - other node to compare with.
+             * @return bool - true if *this is equal to the other node, false otherwise.
+            */
+            const bool operator==(const Node<T, D>& rhs) const;
 
             /**
              * @brief Get the name of the node.
@@ -117,7 +124,7 @@ namespace search
              * @brief Get the neighbors of the node.
              * @return std::vector<Node<T, D>> - neighbors of the node.
              */
-            const std::vector<Node<T, D>> getNeighbors() const;
+            const std::vector<const Node<T, D>*> getNeighbors() const;
     };
     
 } // namespace search
