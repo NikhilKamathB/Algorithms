@@ -21,11 +21,17 @@ add_library(search_node SHARED
 target_include_directories(search_node PUBLIC include ${EIGEN3_INCLUDE_DIR})
 target_link_libraries(search_node PUBLIC plog)
 
+# BASE SEARCH
+add_library(search_base SHARED
+    src/search/base.cpp)
+target_include_directories(search_base PUBLIC include)
+target_link_libraries(search_base PUBLIC plog search_node)
+
 # DFS
 add_library(search_dfs SHARED
     src/search/dfs.cpp)
 target_include_directories(search_dfs PUBLIC include)
-target_link_libraries(search_dfs PUBLIC plog search_node)
+target_link_libraries(search_dfs PUBLIC plog search_node search_base)
 
 # Environment
 add_library(search_environment SHARED

@@ -6,7 +6,7 @@
  * @brief Contains the definition of the `DFS` class/implementation.
  */
 
-#include <search/node.h>
+#include <search/search/base.h>
 
 namespace search {
 
@@ -17,13 +17,13 @@ namespace search {
      */
 
     template <typename T, unsigned int D>
-    class DFS {
+    class DFS: public SearchBase<T, D>{
 
         private:
             /**
              * @brief Private members of `DFS`
              */
-        
+
         public:
             /**
              * @brief Public members of `DFS`
@@ -45,7 +45,7 @@ namespace search {
              * @param goal_node - goal node in the environment.
              * @return a vector of node names representing the path from the start node to the goal node.
             */
-            const std::vector<Node<T, D>> solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const;
+            const std::vector<Node<T, D>> solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const override;
     };
 
 } // namespace search
