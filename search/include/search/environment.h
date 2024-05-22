@@ -140,7 +140,7 @@ namespace search
             const std::vector<Node<T, D>> search(
                 const Node<T, D>& start_node,
                 const Node<T, D>& goal_node,
-                const SearchAlgorithm& method = SearchAlgorithm::DEPTH_FIRST_SEARCH);
+                const SearchAlgorithm& method = SearchAlgorithm::BREADTH_FIRST_SEARCH);
     };
 
 } // namespace search

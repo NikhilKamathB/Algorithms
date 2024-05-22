@@ -4,6 +4,7 @@
  */
 
 #include <search/search/dfs.h>
+#include <search/search/bfs.h>
 #include <search/environment.h>
 
 namespace search
@@ -125,7 +126,12 @@ namespace search
         const Node<T, D>& goal_node,
         const SearchAlgorithm& search_algorithm) {
         switch (search_algorithm)
-        {
+        {   
+            case SearchAlgorithm::BREADTH_FIRST_SEARCH:
+            {
+                BFS<T, D> bfs;
+                return bfs.solve(start_node, goal_node);
+            }
             case SearchAlgorithm::DEPTH_FIRST_SEARCH:
             {
                 DFS<T, D> dfs;

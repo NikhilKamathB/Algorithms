@@ -33,11 +33,17 @@ add_library(search_dfs SHARED
 target_include_directories(search_dfs PUBLIC include)
 target_link_libraries(search_dfs PUBLIC plog search_node search_base)
 
+# BFS
+add_library(search_bfs SHARED
+    src/search/bfs.cpp)
+target_include_directories(search_bfs PUBLIC include)
+target_link_libraries(search_bfs PUBLIC plog search_node search_base)
+
 # Environment
 add_library(search_environment SHARED
     src/environment.cpp)
 target_include_directories(search_environment PUBLIC include ${EIGEN3_INCLUDE_DIR})
-target_link_libraries(search_environment PUBLIC plog search_node search_dfs)
+target_link_libraries(search_environment PUBLIC plog search_node search_dfs search_bfs)
 
 # __main__
 add_executable(search_main __main__.cpp)

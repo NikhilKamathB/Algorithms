@@ -1,29 +1,29 @@
 /**
- * @file dfs.cpp
- * @brief Contains the implementation of the `DFS` class.
+ * @file bfs.cpp
+ * @brief Contains the implementation of the `BFS` class.
 */
 
 #include <deque>
 #include <unordered_set>
-#include <search/search/dfs.h>
+#include <search/search/bfs.h>
 
 namespace search {
     template <typename T, unsigned int D>
-    DFS<T, D>::DFS() {}
+    BFS<T, D>::BFS() {}
 
     template <typename T, unsigned int D>
-    DFS<T, D>::~DFS() {}
+    BFS<T, D>::~BFS() {}
 
     template <typename T, unsigned int D>
-    const std::vector<Node<T, D>> DFS<T, D>::solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const
-    {   
+    const std::vector<Node<T, D>> BFS<T, D>::solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const
+    {
         std::unordered_set<const Node<T, D>*> visited_nodes;
         std::unordered_map<const Node<T, D>*, const Node<T, D>*> parent_map;
-        std::deque<const Node<T, D>*> stack = {&start_node};
-        while (!stack.empty())
+        std::deque<const Node<T, D>*> queue = {&start_node};
+        while(!queue.empty())
         {
-            const Node<T, D> *current_node = stack.back();
-            stack.pop_back();
+            const Node<T, D> *current_node = queue.front();
+            queue.pop_front();
             if (visited_nodes.find(current_node) != visited_nodes.end())
             {
                 continue;
@@ -38,19 +38,19 @@ namespace search {
             {
                 if (visited_nodes.find(neighbor) == visited_nodes.end())
                 {
-                    stack.push_back(neighbor);
+                    queue.push_back(neighbor);
                     parent_map[neighbor] = current_node;
                 }
             }
         }
-        return {};
+        return {};    
     }
 
     // Explicit template instantiation
-    template class DFS<float, 1U>;
-    template class DFS<float, 2U>;
-    template class DFS<float, 3U>;
-    template class DFS<double, 1U>;
-    template class DFS<double, 2U>;
-    template class DFS<double, 3U>;
+    template class BFS<float, 1U>;
+    template class BFS<float, 2U>;
+    template class BFS<float, 3U>;
+    template class BFS<double, 1U>;
+    template class BFS<double, 2U>;
+    template class BFS<double, 3U>;
 }

@@ -3,7 +3,6 @@
  * @brief Contains the implementation of the `SearchBase` class.
  */
 
-#include <iostream>
 #include <search/search/base.h>
 
 namespace search {

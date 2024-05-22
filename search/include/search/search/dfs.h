@@ -17,7 +17,7 @@ namespace search {
      */
 
     template <typename T, unsigned int D>
-    class DFS: public SearchBase<T, D>{
+    class DFS: public SearchBase<T, D> {
 
         private:
             /**
