@@ -135,9 +135,9 @@ namespace search
              * @param start_node - start node for the search.
              * @param goal_node - goal node for the search.
              * @param method - search algorithm to use - refer to `SearchAlgorithm` enum - default is A* search.
-             * @return std::vector<Node<T, D>> - path from the start node to the goal node.
+             * @return std::vector<std::pair<Node<T, D>, T>> - path from the start node to the goal node with their cumulative costs.
              */
-            const std::vector<Node<T, D>> search(
+            const std::vector<std::pair<Node<T, D>, T>> search(
                 const Node<T, D>& start_node,
                 const Node<T, D>& goal_node,
                 const SearchAlgorithm& method = SearchAlgorithm::BREADTH_FIRST_SEARCH);

@@ -15,10 +15,10 @@ namespace search {
     DFS<T, D>::~DFS() {}
 
     template <typename T, unsigned int D>
-    const std::vector<Node<T, D>> DFS<T, D>::solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const
+    const std::vector<std::pair<Node<T, D>, T>> DFS<T, D>::solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const
     {   
         std::unordered_set<const Node<T, D>*> visited_nodes;
-        std::unordered_map<const Node<T, D>*, const Node<T, D>*> parent_map;
+        std::unordered_map<const Node<T, D>*, std::pair<const Node<T, D>*, T>> parent_map_cost;
         std::deque<const Node<T, D>*> stack = {&start_node};
         while (!stack.empty())
         {
@@ -31,7 +31,7 @@ namespace search {
             visited_nodes.insert(current_node);
             if (*current_node == goal_node)
             {
-                return this->getPath(start_node, goal_node, parent_map);
+                return this->getPath(start_node, goal_node, parent_map_cost);
             }
             std::vector<const Node<T, D>*> neighbors = current_node->getNeighbors();
             for (const Node<T, D> *neighbor : neighbors)
@@ -39,11 +39,11 @@ namespace search {
                 if (visited_nodes.find(neighbor) == visited_nodes.end())
                 {
                     stack.push_back(neighbor);
-                    parent_map[neighbor] = current_node;
+                    parent_map_cost[neighbor] = std::make_pair(current_node, current_node->getCost(*neighbor));
                 }
             }
         }
-        return {};
+        return std::vector<std::pair<Node<T, D>, T>>();
     }
 
     // Explicit template instantiation

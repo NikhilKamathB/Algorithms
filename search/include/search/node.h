@@ -106,19 +106,19 @@ namespace search
              * @param next_node - next neighboring node.
              * @return T - distance between this node and the next neighboring node.
              */
-            const T getDistance(Node<T, D>& next_node) const;
+            const T getDistance(const Node<T, D>& next_node) const;
 
             /**
              * @brief Get/Compute the cost of the path from this node to the next neighboring node.
              * @param next_node - next neighboring node.
              */
-            const T getCost(Node<T, D>& next_node) const;
+            const T getCost(const Node<T, D>& next_node) const;
 
             /** 
              * @brief Add a neighbor to the node.
              * @param neighbor - neighbor to add to the node.
             */
-            void addNeighbor(Node<T, D>& neighbor);
+            void addNeighbor(const Node<T, D>& neighbor);
 
             /**
              * @brief Get the neighbors of the node.
@@ -127,6 +127,25 @@ namespace search
             const std::vector<const Node<T, D>*> getNeighbors() const;
     };
     
+    /**
+     * @struct NodeGnCompator
+     * @brief This struct represents a comparator for the `Node` class.
+     * @details This struct will enable comparison of two nodes based on their `g(n)` values.
+    */
+    template <typename T, unsigned int D>
+    struct NodeGnComparator
+    {
+         /**
+          * @brief Comparator for two nodes based on their `g(n)` values.
+          * @param lhs - left hand side node.
+          * @param rhs - right hand side node.
+          * @return bool - true if `g(n)` of lhs is greater than `g(n)` of rhs, false otherwise.
+         */
+         bool operator()(const std::pair<const Node<T, D>*, T>& lhs, const std::pair<const Node<T, D>*, T>& rhs) const
+         {
+            return lhs.second > rhs.second;
+         }
+    };
 } // namespace search
 
 

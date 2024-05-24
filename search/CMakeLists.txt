@@ -27,25 +27,41 @@ add_library(search_base SHARED
 target_include_directories(search_base PUBLIC include)
 target_link_libraries(search_base PUBLIC plog search_node)
 
-# DFS
-add_library(search_dfs SHARED
-    src/search/dfs.cpp)
-target_include_directories(search_dfs PUBLIC include)
-target_link_libraries(search_dfs PUBLIC plog search_node search_base)
-
 # BFS
 add_library(search_bfs SHARED
     src/search/bfs.cpp)
 target_include_directories(search_bfs PUBLIC include)
 target_link_libraries(search_bfs PUBLIC plog search_node search_base)
 
+# DFS
+add_library(search_dfs SHARED
+    src/search/dfs.cpp)
+target_include_directories(search_dfs PUBLIC include)
+target_link_libraries(search_dfs PUBLIC plog search_node search_base)
+
+# UCS
+add_library(search_ucs SHARED
+    src/search/ucs.cpp)
+target_include_directories(search_ucs PUBLIC include)
+target_link_libraries(search_ucs PUBLIC plog search_node search_base)
+
 # Environment
 add_library(search_environment SHARED
     src/environment.cpp)
 target_include_directories(search_environment PUBLIC include ${EIGEN3_INCLUDE_DIR})
-target_link_libraries(search_environment PUBLIC plog search_node search_dfs search_bfs)
+target_link_libraries(search_environment PUBLIC plog search_node search_dfs search_bfs search_ucs)
 
-# __main__
-add_executable(search_main __main__.cpp)
-target_link_libraries(search_main PRIVATE search_environment)
-target_compile_definitions(search_main PRIVATE FLOATING_POINT_TYPE=double DIM=1U)
+# __main__ T=double DIM=1
+add_executable(search_main_d1 __main__.cpp)
+target_link_libraries(search_main_d1 PRIVATE search_environment)
+target_compile_definitions(search_main_d1 PRIVATE FLOATING_POINT_TYPE=double DIM=1U)
+
+# __main__ T=double DIM=2
+add_executable(search_main_d2 __main__.cpp)
+target_link_libraries(search_main_d2 PRIVATE search_environment)
+target_compile_definitions(search_main_d2 PRIVATE FLOATING_POINT_TYPE=double DIM=2U)
+
+# __main__ T=double DIM=3
+add_executable(search_main_d3 __main__.cpp)
+target_link_libraries(search_main_d3 PRIVATE search_environment)
+target_compile_definitions(search_main_d3 PRIVATE FLOATING_POINT_TYPE=double DIM=3U)

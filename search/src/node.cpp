@@ -55,7 +55,7 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    const T Node<T, D>::getDistance(Node<T, D>& next_node) const
+    const T Node<T, D>::getDistance(const Node<T, D>& next_node) const
     {
         switch (distance_metric_)
         {
@@ -69,13 +69,13 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    const T Node<T, D>::getCost(Node<T, D>& next_node) const
+    const T Node<T, D>::getCost(const Node<T, D>& next_node) const
     {
         return this->getDistance(next_node);
     }
 
     template <typename T, unsigned int D>
-    void Node<T, D>::addNeighbor(Node<T, D>& neighbor)
+    void Node<T, D>::addNeighbor(const Node<T, D>& neighbor)
     {
         neighbors_.push_back(&neighbor);
     }

@@ -13,27 +13,22 @@ namespace search {
     SearchBase<T, D>::~SearchBase() {}
 
     template <typename T, unsigned int D>
-    const std::vector<Node<T, D>> SearchBase<T, D>::getPath(
+    const std::vector<std::pair<Node<T, D>, T>> SearchBase<T, D>::getPath(
         const Node<T, D>& start_node,
         const Node<T, D>& goal_node,
-        const std::unordered_map<const Node<T, D>*, const Node<T, D>*>& parent_map) const
+        const std::unordered_map<const Node<T, D> *, std::pair<const Node<T, D> *, T>>& parent_map) const
     {
-        std::vector<Node<T, D>> path;
+        std::vector<std::pair<Node<T, D>, T>> path;
         const Node<T, D> *current_node = &goal_node;
         while (*current_node != start_node)
         {
-            path.push_back(*current_node);
-            current_node = parent_map.at(current_node);
+            std::pair<Node<T, D>, T> node_cost = std::make_pair(*current_node, parent_map.at(current_node).second);
+            path.push_back(node_cost);
+            current_node = parent_map.at(current_node).first;
         }
-        path.push_back(start_node);
+        path.push_back(std::make_pair(start_node, 0));
         std::reverse(path.begin(), path.end());
         return path;
-    }
-
-    template <typename T, unsigned int D>
-    const std::vector<Node<T, D>> SearchBase<T, D>::solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const
-    {
-        return {};
     }
 
     // Explicit template instantiation

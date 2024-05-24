@@ -43,9 +43,9 @@ namespace search {
              * @brief Solve the search problem.
              * @param start_node - start node in the environment.
              * @param goal_node - goal node in the environment.
-             * @return a vector of node names representing the path from the start node to the goal node.
+             * @return a vector of node representing the path from the start node to the goal node.
             */
-            const std::vector<Node<T, D>> solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const override;
+            const std::vector<std::pair<Node<T, D>, T>> solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const;
     };
 
 } // namespace search

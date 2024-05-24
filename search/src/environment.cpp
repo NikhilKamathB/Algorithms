@@ -3,8 +3,9 @@
  * @brief Contains the implementation of the `Environment` class.
  */
 
-#include <search/search/dfs.h>
 #include <search/search/bfs.h>
+#include <search/search/dfs.h>
+#include <search/search/ucs.h>
 #include <search/environment.h>
 
 namespace search
@@ -121,10 +122,11 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    const std::vector<Node<T, D>> Environment<T, D>::search(
-        const Node<T, D>& start_node,
-        const Node<T, D>& goal_node,
-        const SearchAlgorithm& search_algorithm) {
+    const std::vector<std::pair<Node<T, D>, T>> Environment<T, D>::search(
+        const Node<T, D> &start_node,
+        const Node<T, D> &goal_node,
+        const SearchAlgorithm &search_algorithm)
+    {
         switch (search_algorithm)
         {   
             case SearchAlgorithm::BREADTH_FIRST_SEARCH:
@@ -137,13 +139,17 @@ namespace search
                 DFS<T, D> dfs;
                 return dfs.solve(start_node, goal_node);
             }
+            case SearchAlgorithm::UNIFORM_COST_SEARCH:
+            {
+                UCS<T, D> ucs;
+                return ucs.solve(start_node, goal_node);
+            }
             default:
             {
                 DFS<T, D> dfs;
                 return dfs.solve(start_node, goal_node);
             }
         }
-        return nodes_;
     }
 
     // Explicit template instantiation

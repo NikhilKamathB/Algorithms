@@ -7,11 +7,11 @@ constexpr unsigned int D = DIM; // Dimensions - [1, 2, 3]
 using Node = search::Node<T, D>;
 using Environment = search::Environment<T, D>;
 
-void printPath(const std::vector<Node>& path)
+void printPath(const std::vector<std::pair<Node, T>> &path)
 {
     for (std::size_t i = 0; i < path.size(); ++i)
     {
-        std::cout << path[i].getName();
+        std::cout << path[i].first.getName() << " (" << path[i].second << ")";
         if (i < path.size() - 1)
         {
             std::cout << " -> ";
@@ -30,14 +30,19 @@ int main(int argc, char *argv[])
     // Create the environment
     env.create();
     // Perform state space search - BFS
-    std::vector<Node> bfs_path = env.search(env.getNode(0), env.getNode(5));
+    std::vector<std::pair<Node, T>> bfs_path = env.search(env.getNode(0), env.getNode(5));
     // Print the path
     std::cout << "BFS Path: ";
     printPath(bfs_path);
     // Perform state space search - DFS
-    std::vector<Node> dfs_path = env.search(env.getNode(0), env.getNode(5), search::SearchAlgorithm::DEPTH_FIRST_SEARCH);
+    std::vector<std::pair<Node, T>> dfs_path = env.search(env.getNode(0), env.getNode(5), search::SearchAlgorithm::DEPTH_FIRST_SEARCH);
     // Print the path
     std::cout << "DFS Path: ";
     printPath(dfs_path);
+    // Perform state space search - UCS
+    std::vector<std::pair<Node, T>> ucs_path = env.search(env.getNode(0), env.getNode(5), search::SearchAlgorithm::UNIFORM_COST_SEARCH);
+    // Print the path
+    std::cout << "UCS Path: ";
+    printPath(ucs_path);
     return 0;
 }
