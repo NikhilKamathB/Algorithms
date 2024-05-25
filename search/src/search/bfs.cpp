@@ -39,7 +39,10 @@ namespace search {
                 if (visited_nodes.find(neighbor) == visited_nodes.end())
                 {
                     queue.push_back(neighbor);
-                    parent_map_cost[neighbor] = std::make_pair(current_node, current_node->getCost(*neighbor));
+                    if (parent_map_cost.find(neighbor) == parent_map_cost.end())
+                    {
+                        parent_map_cost[neighbor] = std::make_pair(current_node, current_node->getCost(*neighbor));
+                    }
                 }
             }
         }

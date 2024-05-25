@@ -146,8 +146,8 @@ namespace search
             }
             default:
             {
-                DFS<T, D> dfs;
-                return dfs.solve(start_node, goal_node);
+                DFS<T, D> bfs;
+                return bfs.solve(start_node, goal_node);
             }
         }
     }

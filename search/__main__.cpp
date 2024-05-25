@@ -6,6 +6,7 @@ constexpr unsigned int D = DIM; // Dimensions - [1, 2, 3]
 
 using Node = search::Node<T, D>;
 using Environment = search::Environment<T, D>;
+using RowVector = Eigen::Matrix<T, 1, D>;
 
 void printPath(const std::vector<std::pair<Node, T>> &path)
 {
@@ -25,10 +26,29 @@ int main(int argc, char *argv[])
     // Create an object of the `Environment` class
     Environment env = Environment(
         /*num_nodes=*/6,
-        /*edges=*/{{0, 1}, {0, 2}, {0, 3}, {2, 4}, {3, 5}}
+        /*edges=*/{
+            {0, 1},
+            {0, 2},
+            {1, 4},
+            {2, 3},
+            {2, 4},
+            {3, 4},
+            {3, 5},
+            {4, 5}
+        },
+        /*distance_metric=*/search::DistanceMetric::MANHATTAN
     );
     // Create the environment
-    env.create();
+    env.create(
+        /*node_values=*/{
+            RowVector {0.0},
+            RowVector {1.0},
+            RowVector {1.0},
+            RowVector {2.0},
+            RowVector {9.0},
+            RowVector {6.0}
+        }
+        );
     // Perform state space search - BFS
     std::vector<std::pair<Node, T>> bfs_path = env.search(env.getNode(0), env.getNode(5));
     // Print the path

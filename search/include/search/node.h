@@ -143,7 +143,7 @@ namespace search
          */
          bool operator()(const std::pair<const Node<T, D>*, T>& lhs, const std::pair<const Node<T, D>*, T>& rhs) const
          {
-            return lhs.second > rhs.second;
+            return lhs.second < rhs.second;
          }
     };
 } // namespace search

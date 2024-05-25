@@ -19,7 +19,7 @@ namespace search {
     {
         std::unordered_set<const Node<T, D>*> visited_nodes;
         std::unordered_map<const Node<T, D>*, std::pair<const Node<T, D>*, T>> parent_map_cost;
-        std::multiset<std::pair<const Node<T, D>*, T>, NodeGnComparator<T, D>> queue = {{&start_node, 0}};
+        std::multiset<std::pair<const Node<T, D>*, T>, NodeGnComparator<T, D>> queue = {std::make_pair(&start_node, 0)};
         while(!queue.empty())
         {
             // Print content of queue
