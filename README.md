@@ -6,6 +6,6 @@ There are many repositories under my GitHub account. This repository serves as a
 #### Algorithms Implemented
 
 * **Search** - All search algorithms implemented can be found under the folder `./search/`. *Search Algorithms* implemented:
-    * A Star
     * BFS
     * DFS
+    * UCS
