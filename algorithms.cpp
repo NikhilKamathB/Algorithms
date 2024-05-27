@@ -64,7 +64,7 @@ namespace algorithms
         const bool &bidirectional) const
     {
         // Solve the search problem.
-        const std::vector<std::pair<Node, T>> result = _search(
+        const std::vector<std::pair<Node, T>> result = this->_search(
             /*num_nodes=*/num_nodes,
             /*node_values=*/node_values,
             /*node_names=*/node_names,

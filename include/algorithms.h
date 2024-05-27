@@ -74,6 +74,7 @@ namespace algorithms
         * @param node_prefix_name - prefix name for the nodes in the environment, default is `Node_`.
         * @param use_node_value - flag to use the node value or not for computing the cost, default is `true`.
         * @param bidirectional - flag to create bidirectional edges between the nodes, default is `true`.
+        * @return List of nodes in the path from start to goal node with their associated cost.
         */
        const std::vector<std::pair<Node, T>> search(
            const std::size_t &num_nodes,
