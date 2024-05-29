@@ -8,7 +8,8 @@
 
 #include <search/search/base.h>
 
-namespace search {
+namespace search
+{
 
     /**
      * @class DFS
@@ -17,35 +18,36 @@ namespace search {
      */
 
     template <typename T, unsigned int D>
-    class DFS: public SearchBase<T, D> {
+    class DFS : public SearchBase<T, D>
+    {
 
-        private:
-            /**
-             * @brief Private members of `DFS`
-             */
+    private:
+        /**
+         * @brief Private members of `DFS`
+         */
 
-        public:
-            /**
-             * @brief Public members of `DFS`
-             */
+    public:
+        /**
+         * @brief Public members of `DFS`
+         */
 
-            /**
-             * @brief Constructor of the `DFS` class.
-             */
-            DFS();
+        /**
+         * @brief Constructor of the `DFS` class.
+         */
+        DFS();
 
-            /**
-             * @brief Destructor of the `DFS` class.
-             */
-            ~DFS();
+        /**
+         * @brief Destructor of the `DFS` class.
+         */
+        ~DFS();
 
-            /**
-             * @brief Solve the search problem.
-             * @param start_node - start node in the environment.
-             * @param goal_node - goal node in the environment.
-             * @return a vector of node representing the path from the start node to the goal node.
-            */
-            const std::vector<std::pair<Node<T, D>, T>> solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const;
+        /**
+         * @brief Solve the search problem.
+         * @param start_node - start node in the environment.
+         * @param goal_node - goal node in the environment.
+         * @return a vector of node representing the path from the start node to the goal node.
+         */
+        const std::vector<std::pair<Node<T, D>, T>> solve(const Node<T, D> &start_node, const Node<T, D> &goal_node) const;
     };
 
 } // namespace search

@@ -1,25 +1,25 @@
 /**
  * @file node.cpp
  * @brief Contains the implementation of the `Node` class.
-*/
+ */
 
 #include <search/node.h>
 
 namespace search
-{   
+{
     template <typename T, unsigned int D>
     Node<T, D>::Node(
-        const std::string& name,
-        const RowVector& value,
-        const DistanceMetric& distance_metric,
-        const bool& use_node_value)
-        :name_(name), value_(value), distance_metric_(distance_metric), use_node_value_(use_node_value) {}
+        const std::string &name,
+        const RowVector &value,
+        const DistanceMetric &distance_metric,
+        const bool &use_node_value)
+        : name_(name), value_(value), distance_metric_(distance_metric), use_node_value_(use_node_value) {}
 
     template <typename T, unsigned int D>
     Node<T, D>::~Node() {}
 
     template <typename T, unsigned int D>
-    const bool Node<T, D>::operator==(const Node<T, D>& node) const
+    const bool Node<T, D>::operator==(const Node<T, D> &node) const
     {
         return (name_ == node.getName() && value_ == node.getValue());
     }
@@ -31,7 +31,7 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    void Node<T, D>::setName(const std::string& name)
+    void Node<T, D>::setName(const std::string &name)
     {
         name_ = name;
     }
@@ -43,7 +43,7 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    void Node<T, D>::setValue(const RowVector& value)
+    void Node<T, D>::setValue(const RowVector &value)
     {
         value_ = value;
     }
@@ -55,33 +55,33 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    const T Node<T, D>::getDistance(const Node<T, D>& next_node) const
+    const T Node<T, D>::getDistance(const Node<T, D> &next_node) const
     {
         switch (distance_metric_)
         {
-            case DistanceMetric::EUCLIDEAN:
-                return (value_ - next_node.getValue()).norm();
-            case DistanceMetric::MANHATTAN:
-                return (value_ - next_node.getValue()).template lpNorm<1>();
-            default:
-                return (value_ - next_node.getValue()).norm();
+        case DistanceMetric::EUCLIDEAN:
+            return (value_ - next_node.getValue()).norm();
+        case DistanceMetric::MANHATTAN:
+            return (value_ - next_node.getValue()).template lpNorm<1>();
+        default:
+            return (value_ - next_node.getValue()).norm();
         }
     }
 
     template <typename T, unsigned int D>
-    const T Node<T, D>::getCost(const Node<T, D>& next_node) const
+    const T Node<T, D>::getCost(const Node<T, D> &next_node) const
     {
         return this->getDistance(next_node);
     }
 
     template <typename T, unsigned int D>
-    void Node<T, D>::addNeighbor(const Node<T, D>& neighbor)
+    void Node<T, D>::addNeighbor(const Node<T, D> &neighbor)
     {
         neighbors_.push_back(&neighbor);
     }
 
     template <typename T, unsigned int D>
-    const std::vector<const Node<T, D>*> Node<T, D>::getNeighbors() const
+    const std::vector<const Node<T, D> *> Node<T, D>::getNeighbors() const
     {
         return neighbors_;
     }
@@ -93,5 +93,5 @@ namespace search
     template class Node<double, 1U>;
     template class Node<double, 2U>;
     template class Node<double, 3U>;
-    
+
 } // namespace search

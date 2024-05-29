@@ -5,7 +5,8 @@
 
 #include <search/search/base.h>
 
-namespace search {
+namespace search
+{
     template <typename T, unsigned int D>
     SearchBase<T, D>::SearchBase() {}
 
@@ -14,9 +15,9 @@ namespace search {
 
     template <typename T, unsigned int D>
     const std::vector<std::pair<Node<T, D>, T>> SearchBase<T, D>::getPath(
-        const Node<T, D>& start_node,
-        const Node<T, D>& goal_node,
-        const std::unordered_map<const Node<T, D> *, std::pair<const Node<T, D> *, T>>& parent_map) const
+        const Node<T, D> &start_node,
+        const Node<T, D> &goal_node,
+        const std::unordered_map<const Node<T, D> *, std::pair<const Node<T, D> *, T>> &parent_map) const
     {
         std::vector<std::pair<Node<T, D>, T>> path;
         const Node<T, D> *current_node = &goal_node;

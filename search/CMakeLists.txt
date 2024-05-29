@@ -12,6 +12,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Include third party libraries
 # Eigen
 set(EIGEN3_INCLUDE_DIR ../third_party/eigen)
+# Plog
 if(NOT TARGET plog)
     add_subdirectory(../third_party/plog ${CMAKE_CURRENT_BINARY_DIR}/plog)
 endif()

@@ -12,46 +12,51 @@ namespace search
 {
     template <typename T, unsigned int D>
     Environment<T, D>::Environment(
-        const std::size_t& num_nodes,
-        const std::vector<std::pair<std::size_t, std::size_t>>& edges,
-        const DistanceMetric& distance_metric,
-        const std::string& node_prefix_name,
-        const bool& use_node_value,
-        const bool& bidirectional)
-        : num_nodes_(num_nodes), edges_(edges), 
-        distance_metric_(distance_metric), node_prefix_name_(node_prefix_name), 
-        use_node_value_(use_node_value), bidirectional_(bidirectional) {
-            nodes_.reserve(num_nodes_);
-            node_names_.reserve(num_nodes_);
-            node_values_.reserve(num_nodes_);
-        }
+        const std::size_t &num_nodes,
+        const std::vector<std::pair<std::size_t, std::size_t>> &edges,
+        const DistanceMetric &distance_metric,
+        const std::string &node_prefix_name,
+        const bool &use_node_value,
+        const bool &bidirectional)
+        : num_nodes_(num_nodes), edges_(edges),
+          distance_metric_(distance_metric), node_prefix_name_(node_prefix_name),
+          use_node_value_(use_node_value), bidirectional_(bidirectional)
+    {
+        nodes_.reserve(num_nodes_);
+        node_names_.reserve(num_nodes_);
+        node_values_.reserve(num_nodes_);
+    }
 
     template <typename T, unsigned int D>
     Environment<T, D>::~Environment() {}
 
     template <typename T, unsigned int D>
-    void Environment<T, D>::createNodeNames(const std::vector<std::string>& node_names)
+    void Environment<T, D>::createNodeNames(const std::vector<std::string> &node_names)
     {
         if (!node_names.empty() && node_names.size() == num_nodes_)
         {
             node_names_ = node_names;
         }
-        else {
-            for (std::size_t i = 0; i < num_nodes_; ++i) {
+        else
+        {
+            for (std::size_t i = 0; i < num_nodes_; ++i)
+            {
                 node_names_.emplace_back(node_prefix_name_ + std::to_string(i));
             }
         }
     }
 
     template <typename T, unsigned int D>
-    void Environment<T, D>::createNodeValues(const std::vector<RowVector>& node_values)
+    void Environment<T, D>::createNodeValues(const std::vector<RowVector> &node_values)
     {
         if (!node_values.empty() && node_values.size() == num_nodes_)
         {
             node_values_ = node_values;
         }
-        else {
-            for (std::size_t i = 0; i < num_nodes_; ++i) {
+        else
+        {
+            for (std::size_t i = 0; i < num_nodes_; ++i)
+            {
                 node_values_.emplace_back(RowVector::Zero());
             }
         }
@@ -59,30 +64,31 @@ namespace search
 
     template <typename T, unsigned int D>
     void Environment<T, D>::initializeNodeItems(
-        const std::vector<RowVector>& node_values,
-        const std::vector<std::string>& node_names)
+        const std::vector<RowVector> &node_values,
+        const std::vector<std::string> &node_names)
     {
         this->createNodeNames(node_names);
         this->createNodeValues(node_values);
     }
 
-
     template <typename T, unsigned int D>
     void Environment<T, D>::createNodes()
     {
-        for (std::size_t i = 0; i < num_nodes_; ++i) {
+        for (std::size_t i = 0; i < num_nodes_; ++i)
+        {
             nodes_.emplace_back(
-                Node<T, D>(node_names_[i], node_values_[i], distance_metric_, use_node_value_)
-            );
+                Node<T, D>(node_names_[i], node_values_[i], distance_metric_, use_node_value_));
         }
     }
 
     template <typename T, unsigned int D>
     void Environment<T, D>::createEdges()
     {
-        for (const std::pair<std::size_t, std::size_t>& edge : edges_) {
+        for (const std::pair<std::size_t, std::size_t> &edge : edges_)
+        {
             nodes_[edge.first].addNeighbor(nodes_[edge.second]);
-            if (bidirectional_) {
+            if (bidirectional_)
+            {
                 nodes_[edge.second].addNeighbor(nodes_[edge.first]);
             }
         }
@@ -101,7 +107,7 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    const Node<T, D>& Environment<T, D>::getNode(const std::size_t& index) const
+    const Node<T, D> &Environment<T, D>::getNode(const std::size_t &index) const
     {
         return nodes_[index];
     }
@@ -113,9 +119,9 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    void Environment<T, D>::create(const std::vector<RowVector>& node_values,
-        const std::vector<std::string>& node_names)
-    {   
+    void Environment<T, D>::create(const std::vector<RowVector> &node_values,
+                                   const std::vector<std::string> &node_names)
+    {
         this->initializeNodeItems(node_values, node_names);
         this->createNodes();
         this->createEdges();
@@ -128,27 +134,27 @@ namespace search
         const SearchAlgorithm &search_algorithm)
     {
         switch (search_algorithm)
-        {   
-            case SearchAlgorithm::BREADTH_FIRST_SEARCH:
-            {
-                BFS<T, D> bfs;
-                return bfs.solve(start_node, goal_node);
-            }
-            case SearchAlgorithm::DEPTH_FIRST_SEARCH:
-            {
-                DFS<T, D> dfs;
-                return dfs.solve(start_node, goal_node);
-            }
-            case SearchAlgorithm::UNIFORM_COST_SEARCH:
-            {
-                UCS<T, D> ucs;
-                return ucs.solve(start_node, goal_node);
-            }
-            default:
-            {
-                DFS<T, D> bfs;
-                return bfs.solve(start_node, goal_node);
-            }
+        {
+        case SearchAlgorithm::BREADTH_FIRST_SEARCH:
+        {
+            BFS<T, D> bfs;
+            return bfs.solve(start_node, goal_node);
+        }
+        case SearchAlgorithm::DEPTH_FIRST_SEARCH:
+        {
+            DFS<T, D> dfs;
+            return dfs.solve(start_node, goal_node);
+        }
+        case SearchAlgorithm::UNIFORM_COST_SEARCH:
+        {
+            UCS<T, D> ucs;
+            return ucs.solve(start_node, goal_node);
+        }
+        default:
+        {
+            DFS<T, D> bfs;
+            return bfs.solve(start_node, goal_node);
+        }
         }
     }
 

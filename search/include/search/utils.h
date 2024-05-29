@@ -27,14 +27,14 @@ namespace search
      * @details The `search_algorithm` member of the `Search` class can be
      * one of the following search algorithms:
      * 1. Breadth First Search    2. Depth First Search
-     * 3. Uniform Cost Search     4. A* Search
+     * 3. Uniform Cost Search     4. A*
      */
     enum class SearchAlgorithm
     {
         BREADTH_FIRST_SEARCH,
         DEPTH_FIRST_SEARCH,
         UNIFORM_COST_SEARCH,
-        A_STAR_SEARCH
+        A_STAR
     };
 } // namespace search
 

@@ -8,23 +8,11 @@ project(algorithms)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Configurations
-set(PYTHON_DIR "/opt/miniconda3" CACHE PATH "Python directory")
-set(PYTHON_EXECUTABLE "${PYTHON_DIR}/bin/python" CACHE PATH "Python executable")
-set(PYTHON_INCLUDE_DIR "${PYTHON_DIR}/include/python3.9" CACHE PATH "Python include directory")
-set(PYTHON_LIBRARY "${PYTHON_DIR}/lib/libpython3.9.dylib" CACHE PATH "Python library path")
-message(STATUS "Set python executable: ${PYTHON_EXECUTABLE}")
-message(STATUS "Set python include dir: ${PYTHON_INCLUDE_DIR}")
-message(STATUS "Set python library: ${PYTHON_LIBRARY}")
-
 # Include third party libraries
-# Eigen
-set(EIGEN3_INCLUDE_DIR ../third_party/eigen)
-
-# Find all packages
-find_package(Boost 1.85.0 REQUIRED COMPONENTS python)
-message(STATUS "Boost include dir: ${Boost_INCLUDE_DIRS}")
-message(STATUS "Boost library dir: ${Boost_LIBRARIES}")
+# Pybind11
+if(NOT TARGET pybind11)
+    add_subdirectory(./third_party/pybind11 ${CMAKE_CURRENT_BINARY_DIR}/pybind11)
+endif()
 
 # Add implementations
 get_property(is_search_ADDED GLOBAL PROPERTY search_ADDED)
@@ -41,8 +29,8 @@ target_link_libraries(algorithms_main PUBLIC search_environment)
 # Driver lib
 add_library(algorithms MODULE
     main.cpp)
-target_include_directories(algorithms PRIVATE ${PYTHON_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
-target_link_libraries(algorithms PRIVATE ${PYTHON_LIBRARY} ${Boost_LIBRARIES} algorithms_main)
+target_include_directories(algorithms PRIVATE ${pybind11_INCLUDE_DIRS})
+target_link_libraries(algorithms PRIVATE pybind11::module algorithms_main)
 set_target_properties(algorithms PROPERTIES PREFIX "")
 
 # Add executables

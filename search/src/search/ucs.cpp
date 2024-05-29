@@ -1,13 +1,12 @@
 /**
  * @file usc.cpp
  * @brief Contains the implementation of the `USC` class.
-*/
+ */
 
-#include <set>
-#include <unordered_set>
 #include <search/search/ucs.h>
 
-namespace search {
+namespace search
+{
     template <typename T, unsigned int D>
     UCS<T, D>::UCS() {}
 
@@ -15,12 +14,12 @@ namespace search {
     UCS<T, D>::~UCS() {}
 
     template <typename T, unsigned int D>
-    const std::vector<std::pair<Node<T, D>, T>> UCS<T, D>::solve(const Node<T, D>& start_node, const Node<T, D>& goal_node) const
+    const std::vector<std::pair<Node<T, D>, T>> UCS<T, D>::solve(const Node<T, D> &start_node, const Node<T, D> &goal_node) const
     {
-        std::unordered_set<const Node<T, D>*> visited_nodes;
-        std::unordered_map<const Node<T, D>*, std::pair<const Node<T, D>*, T>> parent_map_cost;
-        std::multiset<std::pair<const Node<T, D>*, T>, NodeGnComparator<T, D>> queue = {std::make_pair(&start_node, 0)};
-        while(!queue.empty())
+        std::unordered_set<const Node<T, D> *> visited_nodes;
+        std::unordered_map<const Node<T, D> *, std::pair<const Node<T, D> *, T>> parent_map_cost;
+        std::multiset<std::pair<const Node<T, D> *, T>, NodeGnComparator<T, D>> queue = {std::make_pair(&start_node, 0)};
+        while (!queue.empty())
         {
             // Print content of queue
             const Node<T, D> *current_node = queue.begin()->first;
@@ -35,7 +34,7 @@ namespace search {
             {
                 return this->getPath(start_node, goal_node, parent_map_cost);
             }
-            std::vector<const Node<T, D>*> neighbors = current_node->getNeighbors();
+            std::vector<const Node<T, D> *> neighbors = current_node->getNeighbors();
             for (const Node<T, D> *neighbor : neighbors)
             {
                 if (visited_nodes.find(neighbor) == visited_nodes.end())
