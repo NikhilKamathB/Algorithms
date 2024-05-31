@@ -6,8 +6,7 @@
  * @brief Contains the definition of the `SearchBase` class.
  */
 
-#include <set>
-#include <deque>
+#include <queue>
 #include <unordered_set>
 #include <search/node.h>
 

@@ -141,10 +141,7 @@ namespace search
          * @param rhs - right hand side node.
          * @return bool - true if `g(n)` of lhs is greater than `g(n)` of rhs, false otherwise.
          */
-        bool operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const
-        {
-            return lhs.second < rhs.second;
-        }
+        bool operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const;
     };
 } // namespace search
 

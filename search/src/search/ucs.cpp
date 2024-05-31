@@ -18,13 +18,14 @@ namespace search
     {
         std::unordered_set<const Node<T, D> *> visited_nodes;
         std::unordered_map<const Node<T, D> *, std::pair<const Node<T, D> *, T>> parent_map_cost;
-        std::multiset<std::pair<const Node<T, D> *, T>, NodeGnComparator<T, D>> queue = {std::make_pair(&start_node, 0)};
-        while (!queue.empty())
+        std::priority_queue<std::pair<const Node<T, D> *, T>, std::vector<std::pair<const Node<T, D> *, T>>, NodeGnComparator<T, D>> p_queue;
+        p_queue.push(std::make_pair(&start_node, 0));
+        while (!p_queue.empty())
         {
-            // Print content of queue
-            const Node<T, D> *current_node = queue.begin()->first;
-            T current_cost = queue.begin()->second;
-            queue.erase(queue.begin());
+            // Print content of p_queue
+            const Node<T, D> *current_node = p_queue.top().first;
+            T current_cost = p_queue.top().second;
+            p_queue.pop();
             if (visited_nodes.find(current_node) != visited_nodes.end())
             {
                 continue;
@@ -40,7 +41,7 @@ namespace search
                 if (visited_nodes.find(neighbor) == visited_nodes.end())
                 {
                     T new_cost = current_cost + current_node->getCost(*neighbor);
-                    queue.insert(std::make_pair(neighbor, new_cost));
+                    p_queue.push(std::make_pair(neighbor, new_cost));
                     if (parent_map_cost.find(neighbor) == parent_map_cost.end() || (parent_map_cost.find(neighbor) != parent_map_cost.end() && new_cost < parent_map_cost[neighbor].second))
                     {
                         parent_map_cost[neighbor] = std::make_pair(current_node, new_cost);
@@ -49,6 +50,12 @@ namespace search
             }
         }
         return std::vector<std::pair<Node<T, D>, T>>();
+    }
+
+    template <typename T, unsigned int D>
+    bool NodeGnComparator<T, D>::operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const
+    {
+        return lhs.second > rhs.second;
     }
 
     // Explicit template instantiation
