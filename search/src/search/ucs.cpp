@@ -52,12 +52,6 @@ namespace search
         return std::vector<std::pair<Node<T, D>, T>>();
     }
 
-    template <typename T, unsigned int D>
-    bool NodeGnComparator<T, D>::operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const
-    {
-        return lhs.second > rhs.second;
-    }
-
     // Explicit template instantiation
     template class UCS<float, 1U>;
     template class UCS<float, 2U>;

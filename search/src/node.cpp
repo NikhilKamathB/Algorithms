@@ -86,6 +86,12 @@ namespace search
         return neighbors_;
     }
 
+    template <typename T, unsigned int D>
+    bool NodeGnComparator<T, D>::operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const
+    {
+        return lhs.second > rhs.second;
+    }
+
     // Explicit instantiation of the template class.
     template class Node<float, 1U>;
     template class Node<float, 2U>;
@@ -93,5 +99,11 @@ namespace search
     template class Node<double, 1U>;
     template class Node<double, 2U>;
     template class Node<double, 3U>;
+    template class NodeGnComparator<float, 1U>;
+    template class NodeGnComparator<float, 2U>;
+    template class NodeGnComparator<float, 3U>;
+    template class NodeGnComparator<double, 1U>;
+    template class NodeGnComparator<double, 2U>;
+    template class NodeGnComparator<double, 3U>;
 
 } // namespace search
