@@ -75,6 +75,12 @@ namespace search
     }
 
     template <typename T, unsigned int D>
+    const T Node<T, D>::getHeuristicCost(const Node<T, D> &goal_node) const
+    {
+        return this->getDistance(goal_node);
+    }
+
+    template <typename T, unsigned int D>
     void Node<T, D>::addNeighbor(const Node<T, D> &neighbor)
     {
         neighbors_.push_back(&neighbor);
@@ -87,7 +93,7 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    bool NodeGnComparator<T, D>::operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const
+    bool NodeFnComparator<T, D>::operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const
     {
         return lhs.second > rhs.second;
     }
@@ -99,11 +105,11 @@ namespace search
     template class Node<double, 1U>;
     template class Node<double, 2U>;
     template class Node<double, 3U>;
-    template class NodeGnComparator<float, 1U>;
-    template class NodeGnComparator<float, 2U>;
-    template class NodeGnComparator<float, 3U>;
-    template class NodeGnComparator<double, 1U>;
-    template class NodeGnComparator<double, 2U>;
-    template class NodeGnComparator<double, 3U>;
+    template class NodeFnComparator<float, 1U>;
+    template class NodeFnComparator<float, 2U>;
+    template class NodeFnComparator<float, 3U>;
+    template class NodeFnComparator<double, 1U>;
+    template class NodeFnComparator<double, 2U>;
+    template class NodeFnComparator<double, 3U>;
 
 } // namespace search

@@ -6,6 +6,7 @@
 #include <search/search/bfs.h>
 #include <search/search/dfs.h>
 #include <search/search/ucs.h>
+#include <search/search/a_star.h>
 #include <search/environment.h>
 
 namespace search
@@ -149,6 +150,11 @@ namespace search
         {
             UCS<T, D> ucs;
             return ucs.solve(start_node, goal_node);
+        }
+        case SearchAlgorithm::A_STAR:
+        {
+            AStar<T, D> a_star;
+            return a_star.solve(start_node, goal_node);
         }
         default:
         {

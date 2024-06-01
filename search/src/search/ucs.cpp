@@ -18,11 +18,11 @@ namespace search
     {
         std::unordered_set<const Node<T, D> *> visited_nodes;
         std::unordered_map<const Node<T, D> *, std::pair<const Node<T, D> *, T>> parent_map_cost;
-        std::priority_queue<std::pair<const Node<T, D> *, T>, std::vector<std::pair<const Node<T, D> *, T>>, NodeGnComparator<T, D>> p_queue;
+        // `p_queue` stores <Node, g(n)> pairs
+        std::priority_queue<std::pair<const Node<T, D> *, T>, std::vector<std::pair<const Node<T, D> *, T>>, NodeFnComparator<T, D>> p_queue;
         p_queue.push(std::make_pair(&start_node, 0));
         while (!p_queue.empty())
         {
-            // Print content of p_queue
             const Node<T, D> *current_node = p_queue.top().first;
             T current_cost = p_queue.top().second;
             p_queue.pop();

@@ -115,6 +115,12 @@ namespace search
         const T getCost(const Node<T, D> &next_node) const;
 
         /**
+         * @brief Get/Compute the heuristic cost of the path from this node to the goal node.
+         * @param goal_node - goal node.
+         */
+        const T getHeuristicCost(const Node<T, D> &goal_node) const;
+
+        /**
          * @brief Add a neighbor to the node.
          * @param neighbor - neighbor to add to the node.
          */
@@ -128,18 +134,20 @@ namespace search
     };
 
     /**
-     * @struct NodeGnCompator
+     * @struct NodeFnCompator
      * @brief This struct represents a comparator for the `Node` class.
-     * @details This struct will enable comparison of two nodes based on their `g(n)` values.
+     * @details This struct will enable comparison of two nodes based on their `f(n) = g(n) + h(n)` values.
+     * `g(n)` is the cost of the path from the start node to the current node.
+     * `h(n)` is the heuristic cost of the path from the current node to the goal node.
      */
     template <typename T, unsigned int D>
-    struct NodeGnComparator
+    struct NodeFnComparator
     {
         /**
-         * @brief Comparator for two nodes based on their `g(n)` values.
+         * @brief Comparator for two nodes based on their `f(n) = g(n) + h(n)` values.
          * @param lhs - left hand side node.
          * @param rhs - right hand side node.
-         * @return bool - true if `g(n)` of lhs is greater than `g(n)` of rhs, false otherwise.
+         * @return bool - true if `f(n)` of lhs is greater than `f(n)` of rhs, false otherwise.
          */
         bool operator()(const std::pair<const Node<T, D> *, T> &lhs, const std::pair<const Node<T, D> *, T> &rhs) const;
     };
