@@ -9,3 +9,4 @@ There are many repositories under my GitHub account. This repository serves as a
     * BFS
     * DFS
     * UCS
+    * A*
