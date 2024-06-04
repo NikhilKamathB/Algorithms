@@ -17,9 +17,6 @@ if(NOT TARGET plog)
     add_subdirectory(../third_party/plog ${CMAKE_CURRENT_BINARY_DIR}/plog)
 endif()
 
-# Find all packages
-find_package(Boost 1.85.0 REQUIRED)
-
 # Node
 add_library(search_node SHARED
     src/node.cpp)
