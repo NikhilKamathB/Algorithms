@@ -22,6 +22,7 @@ namespace search
         while (!stack.empty())
         {
             const Node<T, D> *current_node = stack.back();
+            T current_cost = parent_map_cost[current_node].second;
             stack.pop_back();
             if (visited_nodes.find(current_node) != visited_nodes.end())
             {
@@ -40,7 +41,7 @@ namespace search
                     stack.push_back(neighbor);
                     if (parent_map_cost.find(neighbor) == parent_map_cost.end())
                     {
-                        parent_map_cost[neighbor] = std::make_pair(current_node, current_node->getCost(*neighbor));
+                        parent_map_cost[neighbor] = std::make_pair(current_node, current_cost + current_node->getCost(*neighbor));
                     }
                 }
             }
