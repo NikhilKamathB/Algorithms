@@ -11,6 +11,7 @@
 
 namespace search
 {
+
     template <typename T, unsigned int D>
     Environment<T, D>::Environment(
         const std::size_t &num_nodes,
@@ -21,6 +22,23 @@ namespace search
         const bool &bidirectional)
         : num_nodes_(num_nodes), edges_(edges),
           distance_metric_(distance_metric), node_prefix_name_(node_prefix_name),
+          use_node_value_(use_node_value), bidirectional_(bidirectional)
+    {
+        nodes_.reserve(num_nodes_);
+        node_names_.reserve(num_nodes_);
+        node_values_.reserve(num_nodes_);
+    }
+
+    template <typename T, unsigned int D>
+    Environment<T, D>::Environment(
+        const std::size_t &num_nodes,
+        const std::vector<std::pair<std::size_t, std::size_t>> &edges,
+        const std::vector<DistanceMetric> &distance_metrics,
+        const std::string &node_prefix_name,
+        const bool &use_node_value,
+        const bool &bidirectional)
+        : num_nodes_(num_nodes), edges_(edges),
+          distance_metrics_(distance_metrics), node_prefix_name_(node_prefix_name),
           use_node_value_(use_node_value), bidirectional_(bidirectional)
     {
         nodes_.reserve(num_nodes_);
@@ -73,12 +91,25 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    void Environment<T, D>::createNodes()
+    void Environment<T, D>::createNodes(const bool &use_metrics)
     {
+        if (!use_metrics)
+        {
+            for (std::size_t i = 0; i < num_nodes_; ++i)
+            {
+                nodes_.emplace_back(
+                    Node<T, D>(node_names_[i], node_values_[i], distance_metric_, use_node_value_));
+            }
+            return;
+        }
+        if (use_metrics && (distance_metrics_.empty() || distance_metrics_.size() != num_nodes_))
+        {
+            throw std::invalid_argument("Distance metrics are not provided or do not match the number of nodes.");
+        }
         for (std::size_t i = 0; i < num_nodes_; ++i)
         {
             nodes_.emplace_back(
-                Node<T, D>(node_names_[i], node_values_[i], distance_metric_, use_node_value_));
+                Node<T, D>(node_names_[i], node_values_[i], distance_metrics_[i], use_node_value_));
         }
     }
 
@@ -96,35 +127,18 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    const std::size_t Environment<T, D>::getNumNodes() const
-    {
-        return num_nodes_;
-    }
-
-    template <typename T, unsigned int D>
-    const std::vector<Node<T, D>> Environment<T, D>::getNodes() const
-    {
-        return nodes_;
-    }
-
-    template <typename T, unsigned int D>
     const Node<T, D> &Environment<T, D>::getNode(const std::size_t &index) const
     {
         return nodes_[index];
     }
 
     template <typename T, unsigned int D>
-    const std::vector<std::pair<std::size_t, std::size_t>> Environment<T, D>::getEdges() const
-    {
-        return edges_;
-    }
-
-    template <typename T, unsigned int D>
     void Environment<T, D>::create(const std::vector<RowVector> &node_values,
-                                   const std::vector<std::string> &node_names)
+                                   const std::vector<std::string> &node_names,
+                                   const bool &use_metrics)
     {
         this->initializeNodeItems(node_values, node_names);
-        this->createNodes();
+        this->createNodes(use_metrics);
         this->createEdges();
     }
 
