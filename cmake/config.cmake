@@ -5,8 +5,12 @@ set(PROJECT_VERSION_PATCH 0 CACHE STRING "Patch version" FORCE)
 
 # Build/compile configuration
 set(CMAKE_CXX_STANDARD "23" CACHE STRING "C++ standard to use")
-option(PACKAGE_INCLUDE_SEARCH "Include `search` package" ON)
 
 # Set global properties
 set_property(GLOBAL PROPERTY CMAKE_CXX_STANDARD ${CMAKE_CXX_STANDARD})
-set_property(GLOBAL PROPERTY PACKAGE_INCLUDE_SEARCH ${PACKAGE_INCLUDE_SEARCH})
+
+# Include third party libraries
+# Eigen
+set(EIGEN3_INCLUDE_DIR ../../third_party/eigen)
+# Boost
+find_package(Boost REQUIRED)
