@@ -36,7 +36,7 @@ namespace math
      * @details An instance of the `RowVectorHasher` struct can be used to hash the `RowVector` type.
      */
     template <typename T, unsigned int D>
-    using RowVectorHasher = MatrixHasher<T, 1, D>;
+    using RowVectorHasher = MatrixHasher<T, 1U, D>;
 
     /**
      * @struct ColumnVectorHasher
@@ -44,7 +44,7 @@ namespace math
      * @details An instance of the `ColumnVectorHasher` struct can be used to hash the `ColumnVector` type.
      */
     template <typename T, unsigned int D>
-    using ColumnVectorHasher = MatrixHasher<T, D, 1>;
+    using ColumnVectorHasher = MatrixHasher<T, D, 1U>;
 
 } // namespace math
 

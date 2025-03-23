@@ -6,15 +6,20 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/config.cmake)
 
 # Project metadata
 set(PROJECT_NAME math)
-project(${PROJECT_NAME} VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
-message(STATUS "Composing project: ${PROJECT_NAME} v${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+project(${PROJECT_NAME} 
+    VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
+    DESCRIPTION "Math library with support for linear algebra, statistics, geometry, calculus, and more.")
+message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}")
 
-# Include utils
-if(NOT TARGET algorithm_utils)
+# Find required packages
+find_package(Boost REQUIRED)
+
+# Include utils library
+if (NOT TARGET utils)
     add_subdirectory(../utils ${CMAKE_CURRENT_BINARY_DIR}/utils)
 endif()
 
-# Math Hasher
+# Math hasher
 add_library(math_hasher
     SHARED
         src/hasher.cpp
@@ -27,20 +32,18 @@ target_include_directories(math_hasher
 )
 target_link_libraries(math_hasher
     PRIVATE
-        algorithm_utils
+        utils
 )
 
 # Math
-add_library(algorithm_math
+add_library(math
     INTERFACE
 )
-target_include_directories(algorithm_math
+target_include_directories(math
     INTERFACE
         include
-        ${EIGEN3_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIRS}
 )
-target_link_libraries(algorithm_math
+target_link_libraries(math
     INTERFACE
         math_hasher
 )

@@ -1,6 +1,6 @@
 /**
  * @file hasher.cpp
- * @brief Contains the implementation of the hashers for math objects.
+ * @brief Contains the implementation of hashers for math objects.
  */
 
 #include <math/hasher.h>

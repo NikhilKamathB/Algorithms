@@ -8,6 +8,11 @@
 
 namespace utils
 {
+    // Distance metric constants
+    enum class DistanceMetric {
+        EUCLIDEAN,
+        MANHATTAN
+    };
 
     // Floating point precision
     static constexpr double floating_point_precision{1e-6};
