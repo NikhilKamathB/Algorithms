@@ -22,7 +22,7 @@ namespace search
     {
     private:
         // List of cost functions
-        std::vector<const Cost<T, D> *>> cost_functions_;
+        std::vector<const Cost<T, D> *> cost_functions_;
 
         // weights for each cost function
         std::vector<double> weights_;

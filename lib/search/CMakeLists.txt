@@ -25,6 +25,7 @@ if (NOT TARGET math)
     add_subdirectory(../math ${CMAKE_CURRENT_BINARY_DIR}/math)
 endif()
 
+# ---------------------------------- Cost ---------------------------------------
 # Search - DistanceCost
 add_library(search_distance_cost
     SHARED
@@ -43,6 +44,25 @@ target_link_libraries(search_distance_cost
         plog
 )
 
+# Search - CompositeCost
+add_library(search_composite_cost
+    SHARED
+        src/cost/composite_cost.cpp
+)
+target_include_directories(search_composite_cost
+    PRIVATE
+        include
+        ${EIGEN3_INCLUDE_DIR}
+        ${Boost_INCLUDE_DIRS}
+)
+target_link_libraries(search_composite_cost
+    PRIVATE
+        math
+        utils
+        plog
+)
+
+# ---------------------------------- Node ---------------------------------------
 # Search - Node
 add_library(search_node
     SHARED
@@ -60,3 +80,5 @@ target_link_libraries(search_node
         utils
         plog
 )
+
+# ---------------------------------- Environment ---------------------------------------

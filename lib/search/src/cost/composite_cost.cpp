@@ -14,7 +14,7 @@ namespace search
         : cost_functions_{cost_functions...}
     {
         PLOGD << "Initializing CompositeCost with " << sizeof...(cost_functions) << " cost functions and equal weights";
-        weights_.resize(cost_functions.size(), 1.0);
+        weights_.resize(cost_functions_.size(), 1.0);
     }
 
     template <typename T, unsigned int D>
