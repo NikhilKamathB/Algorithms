@@ -3,7 +3,7 @@
 
 /**
  * @file hasher.h
- * @brief Contains the definition of the hashers for math objects.
+ * @brief Contains the declaration of the hashers for math objects.
  */
 
 #include <boost/container_hash/hash.hpp>
@@ -16,7 +16,9 @@ namespace math
     /**
      * @struct MatrixHasher
      * @brief This struct represents a hasher for the `Matrix` type.
-     * @details An instance of the `MatrixHasher` struct can be used to hash the `Matrix` type.
+     * @tparam T Type.
+     * @tparam R Rows.
+     * @tparam C Columns.
      */
     template <typename T, unsigned int R, unsigned int C>
     struct MatrixHasher
@@ -24,7 +26,7 @@ namespace math
         /**
          * @brief Hash the matrix type and return the hash value of the matrix.
          * @param matrix matrix to hash.
-         * @param seed seed value for the hash - default is 42.
+         * @param seed seed value for the hash - seed will be alterd by the boost library - default is 42.
          * @return std::size_t - hash value of the matrix.
          */
         std::size_t operator()(const Matrix<T, R, C> &matrix, std::size_t seed = 42) const noexcept;
@@ -33,7 +35,9 @@ namespace math
     /**
      * @struct RowVectorHasher
      * @brief This struct represents a hasher for the `RowVector` type.
-     * @details An instance of the `RowVectorHasher` struct can be used to hash the `RowVector` type.
+     * @tparam T Type.
+     * @tparam R Rows.
+     * @tparam C Columns.
      */
     template <typename T, unsigned int D>
     using RowVectorHasher = MatrixHasher<T, 1U, D>;
@@ -41,7 +45,9 @@ namespace math
     /**
      * @struct ColumnVectorHasher
      * @brief This struct represents a hasher for the `ColumnVector` type.
-     * @details An instance of the `ColumnVectorHasher` struct can be used to hash the `ColumnVector` type.
+     * @tparam T Type.
+     * @tparam R Rows.
+     * @tparam C Columns.
      */
     template <typename T, unsigned int D>
     using ColumnVectorHasher = MatrixHasher<T, D, 1U>;

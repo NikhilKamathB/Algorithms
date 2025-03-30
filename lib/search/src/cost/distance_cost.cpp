@@ -9,15 +9,28 @@ namespace search
 {
     template <typename T, unsigned int D>
     DistanceCost<T, D>::DistanceCost(utils::DistanceMetric distance_metric)
-        : distance_metric_(distance_metric) {}
+        : distance_metric_(distance_metric)
+    {
+        PLOGD << "Initializing DistanceCost with distance metric: " << static_cast<uint8_t>(distance_metric_);
+    }
 
     template <typename T, unsigned int D>
-    DistanceCost<T, D>::~DistanceCost() {}
+    DistanceCost<T, D>::~DistanceCost()
+    {
+        PLOGD << "Destroying DistanceCost object";
+    }
+
+    template <typename T, unsigned int D>
+    const typename DistanceCost<T, D>::DistanceMetric DistanceCost<T, D>::getDistanceMetric() const
+    {
+        return distance_metric_;
+    }
 
     template <typename T, unsigned int D>
     const double DistanceCost<T, D>::getCost(const Node<T, D> &from_node,
-                                              const Node<T, D> &to_node) const
+                                             const Node<T, D> &to_node) const
     {
+        PLOGD << "Calculating cost from node: " << from_node.getName() << " to node: " << to_node.getName();
         switch (distance_metric_)
         {
         case utils::DistanceMetric::EUCLIDEAN:

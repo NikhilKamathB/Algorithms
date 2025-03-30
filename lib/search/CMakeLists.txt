@@ -10,8 +10,10 @@ project(${PROJECT_NAME} VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINO
     DESCRIPTION "Search library enables efficient searching using various algorithms in a defined space.")
 message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}")
 
-# Find required packages
-find_package(Boost REQUIRED)
+# Include third party libraries
+if (NOT TARGET plog)
+    add_subdirectory(../../third_party/plog ${CMAKE_CURRENT_BINARY_DIR}/plog)
+endif()
 
 # Include utils library
 if (NOT TARGET utils)
@@ -38,6 +40,7 @@ target_link_libraries(search_distance_cost
     PRIVATE
         math
         utils
+        plog
 )
 
 # Search - Node
@@ -55,4 +58,5 @@ target_link_libraries(search_node
     PRIVATE
         math
         utils
+        plog
 )

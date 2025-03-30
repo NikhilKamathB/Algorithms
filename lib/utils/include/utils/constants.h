@@ -3,13 +3,16 @@
 
 /**
  * @file constants.h
- * @brief Contains the definition of the constants used in the library (header only file).
+ * @brief Contains the declaration of the constants used in the library (header only file).
  */
+
+#include <cstdint>
 
 namespace utils
 {
     // Distance metric constants
-    enum class DistanceMetric {
+    enum class DistanceMetric : uint8_t
+    {
         EUCLIDEAN,
         MANHATTAN
     };

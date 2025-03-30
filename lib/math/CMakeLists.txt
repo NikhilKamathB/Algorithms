@@ -11,9 +11,6 @@ project(${PROJECT_NAME}
     DESCRIPTION "Math library with support for linear algebra, statistics, geometry, calculus, and more.")
 message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}")
 
-# Find required packages
-find_package(Boost REQUIRED)
-
 # Include utils library
 if (NOT TARGET utils)
     add_subdirectory(../utils ${CMAKE_CURRENT_BINARY_DIR}/utils)

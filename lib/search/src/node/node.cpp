@@ -14,10 +14,16 @@ namespace search
     Node<T, D>::Node(const NodeValue<T, D> &node_value, const std::string &name)
         : node_value_(node_value),
           name_(name),
-          uuid_(uuid_generator_()) {}
+          uuid_(uuid_generator_())
+    {
+        PLOGD << "Initializing Node object: " << name_ << " with UUID: " << uuid_;
+    }
 
     template <typename T, unsigned int D>
-    Node<T, D>::~Node() {}
+    Node<T, D>::~Node()
+    {
+        PLOGD << "Destroying Node object: " << name_;
+    }
 
     template <typename T, unsigned int D>
     const std::string &Node<T, D>::getName() const
@@ -50,9 +56,9 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    std::ostream &operator<<(std::ostream &os, const NodeValue<T, D> &node_value)
+    std::ostream &operator<<(std::ostream &os, const typename Node<T, D>::NodeValue &node_value)
     {
-        os << node_value.value;
+        os << "NodeValue: " << node_value.value;
         return os;
     }
 

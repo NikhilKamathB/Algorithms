@@ -1,11 +1,12 @@
-#ifndef SEARCH_NODE_H
-#define SEARCH_NODE_H
+#ifndef SEARCH_NODE_NODE_H
+#define SEARCH_NODE_NODE_H
 
 /**
  * @file node.h
- * @brief Contains the definition of the `Node` type.
+ * @brief Contains the declaration of the `Node` type.
  */
 
+#include <plog/Log.h>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -13,26 +14,36 @@
 
 namespace search
 {
-
+    
     /**
      * @struct NodeValue
-     * @brief This struct represents the value of a node.
-     * @details An instance of the `NodeValue` struct can be used to store the value of a node.
+     * @brief This struct represents the value of a node. Extends the `NodeValue` struct to define a custom node value.
+     * @tparam T Type.
+     * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
     struct NodeValue
     {
+
         using ColumnVector = math::ColumnVector<T, D>;
 
+        // Node value
         ColumnVector value;
 
+        /**
+         * @brief << operator - a friend function for streaming the NodeValue to an output stream.
+         * @param os output stream.
+         * @param node_value node value to stream.
+         * @return std::ostream& output stream.
+         */
         friend std::ostream &operator<<(std::ostream &os, const NodeValue<T, D> &node_value);
     };
 
     /**
      * @class Node
-     * @brief This class represents a node in a graph (a basic node). Inherit from this class to create a custom node.
-     * @details An instance of the `Node` class represents a node in the search space.
+     * @brief This class represents a node in a graph / search space (a basic node). Inherit from this class to create a custom node.
+     * @tparam T Type.
+     * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
     class Node
@@ -99,7 +110,7 @@ namespace search
         void setName(const std::string &name);
 
         /**
-         * @brief A friend function for streaming the node to an output stream.
+         * @brief << operator - a friend function for streaming the Node to an output stream.
          * @param os output stream.
          * @param node node to stream.
          * @return std::ostream& output stream.
@@ -107,7 +118,7 @@ namespace search
         friend std::ostream &operator<<(std::ostream &os, const Node<T, D> &node);
 
         /**
-         * @brief == operator overload for comparing two nodes.
+         * @brief == operator - a friend function overload for comparing two nodes.
          * @param lhs left hand side node.
          * @param rhs right hand side node.
          * @return true if the nodes are equal, false otherwise.
@@ -117,4 +128,4 @@ namespace search
 
 } // namespace search
 
-#endif // SEARCH_NODE_H
+#endif // SEARCH_NODE_NODE_H

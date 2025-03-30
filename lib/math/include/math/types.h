@@ -3,7 +3,7 @@
 
 /**
  * @file math.h
- * @brief Contains the definition of the data structures that can be used in mathematical computations (header only file).
+ * @brief Contains the declaration of the data structures that can be used in mathematical computations (header only file).
  */
 
 #include <Eigen/Dense>
@@ -11,15 +11,28 @@
 namespace math
 {
 
-    // Row vector type
+    /**
+     * @brief Row vector type
+     * @tparam T Type.
+     * @tparam D Dimension.
+     */
     template <typename T, unsigned int D>
     using RowVector = Eigen::Matrix<T, 1, D>;
 
-    // Column vector type
+    /**
+     * @brief Column vector type
+     * @tparam T Type.
+     * @tparam D Dimension.
+     */
     template <typename T, unsigned int D>
     using ColumnVector = Eigen::Matrix<T, D, 1>;
 
-    // Matrix type
+    /**
+     * @brief Matrix type
+     * @tparam T Type.
+     * @tparam R Rows.
+     * @tparam C Columns.
+     */
     template <typename T, unsigned int R, unsigned int C>
     using Matrix = Eigen::Matrix<T, R, C>;
 
