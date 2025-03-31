@@ -44,18 +44,18 @@ target_link_libraries(search_distance_cost
         plog
 )
 
-# Search - CompositeCost
-add_library(search_composite_cost
+# Search - AggregateCost
+add_library(search_aggregate_cost
     SHARED
-        src/cost/composite_cost.cpp
+        src/cost/aggregate_cost.cpp
 )
-target_include_directories(search_composite_cost
+target_include_directories(search_aggregate_cost
     PRIVATE
         include
         ${EIGEN3_INCLUDE_DIR}
         ${Boost_INCLUDE_DIRS}
 )
-target_link_libraries(search_composite_cost
+target_link_libraries(search_aggregate_cost
     PRIVATE
         math
         utils

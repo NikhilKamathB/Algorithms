@@ -1,9 +1,9 @@
-#ifndef SEARCH_COST_COMPOSITE_COST_H
-#define SEARCH_COST_COMPOSITE_COST_H
+#ifndef SEARCH_COST_AGGREGATE_COST_H
+#define SEARCH_COST_AGGREGATE_COST_H
 
 /**
- * @file composite_cost.h
- * @brief Contains the declaration of the `CompositeCost` class. This class is used to combine multiple cost functions into a single cost function.
+ * @file aggregate_cost.h
+ * @brief Contains the declaration of the `AggregateCost` class. This class is used to combine multiple cost functions into a single cost function.
  */
 
 #include <search/cost/cost.h>
@@ -12,14 +12,15 @@ namespace search
 {
 
     /**
-     * @class CompositeCost
-     * @brief This class represents a composite cost function that combines multiple cost functions into one.
+     * @class AggregateCost
+     * @brief This class represents a aggregate cost function that combines multiple cost functions into one.
      * @tparam T Type.
      * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
-    class CompositeCost : protected Cost<T, D>
+    class AggregateCost : protected Cost<T, D>
     {
+
     private:
         // List of cost functions
         std::vector<const Cost<T, D> *> cost_functions_;
@@ -29,28 +30,28 @@ namespace search
 
     public:
         /**
-         * @brief Construct a new CompositeCost object.
+         * @brief Construct a new aggregateCost object.
          * @tparam C Cost function type.
          * @param cost_functions list of cost functions to combine.
          */
         template <typename... C>
             requires(std::derived_from<C, Cost<T, D>> && ...)
-        CompositeCost(const C &...cost_functions);
+        AggregateCost(const C &...cost_functions);
 
         /**
-         * @brief Construct a new CompositeCost object.
+         * @brief Construct a new aggregateCost object.
          * @tparam C Cost function type.
          * @param weights list of weights for each cost function.
          * @param cost_functions list of cost functions to combine.
          */
         template <typename... C>
             requires(std::derived_from<C, Cost<T, D>> && ...)
-        CompositeCost(const std::vector<double> &weights, const C &...cost_functions);
+        AggregateCost(const std::vector<double> &weights, const C &...cost_functions);
 
         /**
-         * @brief Destructor for the CompositeCost class.
+         * @brief Destructor for the aggregateCost class.
          */
-        ~CompositeCost();
+        ~AggregateCost();
 
         /**
          * @brief Get the const of going from node A to node B (`from_node` to `to_node`).
@@ -64,4 +65,4 @@ namespace search
 
 } // namespace search
 
-#endif // SEARCH_COST_COMPOSITE_COST_H
+#endif // SEARCH_COST_AGGREGATE_COST_H
