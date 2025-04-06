@@ -1,6 +1,6 @@
 /**
  * @file aggregate_cost.cpp
- * @brief Contains the implementation of the `aggregateCost` class.
+ * @brief Contains the implementation of the `AggregateCost` class.
  */
 
 #include <search/cost/aggregate_cost.h>
@@ -11,9 +11,9 @@ namespace search
     template <typename... C>
         requires(std::derived_from<C, Cost<T, D>> && ...)
     AggregateCost<T, D>::AggregateCost(const C &...cost_functions)
-        : cost_functions_{cost_functions...}
+        : cost_functions_{&cost_functions...}
     {
-        PLOGD << "Initializing aggregateCost with " << sizeof...(cost_functions) << " cost functions and equal weights";
+        PLOGD << "Initializing aggregateCost with " << sizeof...(cost_functions) << " cost functions and equally distributed weights";
         weights_.resize(cost_functions_.size(), 1.0);
     }
 
@@ -22,7 +22,7 @@ namespace search
         requires(std::derived_from<C, Cost<T, D>> && ...)
     AggregateCost<T, D>::AggregateCost(const std::vector<double> &weights, const C &...cost_functions)
         : weights_(weights),
-          cost_functions_{cost_functions...}
+          cost_functions_{&cost_functions...}
     {
         PLOGD << "Initializing aggregateCost with " << sizeof...(cost_functions) << " cost functions and " << weights.size() << " weights";
         if (weights_.size() != cost_functions_.size())
@@ -35,7 +35,7 @@ namespace search
     template <typename T, unsigned int D>
     AggregateCost<T, D>::~AggregateCost()
     {
-        PLOGD << "Destroying aggregateCost object";
+        PLOGD << "Destroying AggregateCost object";
     }
 
     template <typename T, unsigned int D>

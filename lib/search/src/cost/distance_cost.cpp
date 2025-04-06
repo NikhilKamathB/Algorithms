@@ -11,7 +11,7 @@ namespace search
     DistanceCost<T, D>::DistanceCost(utils::DistanceMetric distance_metric)
         : distance_metric_(distance_metric)
     {
-        PLOGD << "Initializing DistanceCost with distance metric: " << static_cast<uint8_t>(distance_metric_);
+        PLOGD << "Initializing DistanceCost with distance metric: " << distance_metric_ << " (" << static_cast<uint8_t>(distance_metric_) << ")";
     }
 
     template <typename T, unsigned int D>

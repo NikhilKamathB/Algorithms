@@ -1,11 +1,11 @@
 # Algorithms
 ___
 
-There are many repositories under my GitHub account. This repository serves as a common package for the implementation of various algorithms. The following algorithms will be/have been implemented in this repo.
+This repository serves as a common package for implementing various algorithms. All of my projects' core logic will be implemented here.
 
 #### Algorithms Implemented
 
-* **Search** - All search algorithms implemented can be found under the folder `./search/`. *Search Algorithms* implemented:
+* **Search** - All search algorithms implemented can be found under the folder `./lib/search`. *Search Algorithms* implemented:
     * BFS
     * DFS
     * UCS

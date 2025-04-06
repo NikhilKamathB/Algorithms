@@ -30,6 +30,9 @@ namespace search
 
         /**
          * @brief Perform space search and return paths from start to goal.
+         * @param start_node The starting node.
+         * @param goal_node The goal node.
+         * @return A vector of vectors of pairs representing the paths from start to goal along with their step costs.
          */
         virtual const std::vector<std::vector<std::pair<Node<T, D> *, double>>> search(
             const Node<T, D> &start_node,

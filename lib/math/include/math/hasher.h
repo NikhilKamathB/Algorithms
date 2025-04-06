@@ -36,8 +36,7 @@ namespace math
      * @struct RowVectorHasher
      * @brief This struct represents a hasher for the `RowVector` type.
      * @tparam T Type.
-     * @tparam R Rows.
-     * @tparam C Columns.
+     * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
     using RowVectorHasher = MatrixHasher<T, 1U, D>;
@@ -46,8 +45,7 @@ namespace math
      * @struct ColumnVectorHasher
      * @brief This struct represents a hasher for the `ColumnVector` type.
      * @tparam T Type.
-     * @tparam R Rows.
-     * @tparam C Columns.
+     * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
     using ColumnVectorHasher = MatrixHasher<T, D, 1U>;

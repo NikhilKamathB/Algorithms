@@ -14,7 +14,7 @@
 
 namespace search
 {
-    
+
     /**
      * @struct NodeValue
      * @brief This struct represents the value of a node. Extends the `NodeValue` struct to define a custom node value.
@@ -60,7 +60,7 @@ namespace search
         NodeValue<T, D> node_value_;
 
         // Node neighbors
-        std::vector<Node<T, D> *> neighbors_;
+        std::vector<const Node<T, D> *> neighbors_;
 
         // UUID generator
         static boost::uuids::random_generator uuid_generator_;
@@ -89,7 +89,7 @@ namespace search
          * @brief Get neighbors of the node.
          * @return const std::vector<Node<T, D>*>& neighbors of the node.
          */
-        const std::vector<Node<T, D> *> &getNeighbors() const;
+        const std::vector<const Node<T, D> *> &getNeighbors() const;
 
         /**
          * @brief Get the value of the node.

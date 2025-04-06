@@ -31,7 +31,7 @@ namespace search
         // Enable bidirectional edges
         bool bidirectional_;
 
-        // List of nodes in the graph
+        // List of nodes
         std::vector<std::shared_ptr<Node<T, D>>> nodes_;
 
     public:
@@ -39,7 +39,6 @@ namespace search
          * @brief Destructor for the Graph class.
          */
         ~Graph() = default;
-     
     };
 
 } // namespace search

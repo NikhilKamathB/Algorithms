@@ -32,7 +32,7 @@ namespace search
     }
 
     template <typename T, unsigned int D>
-    const std::vector<Node<T, D> *> &Node<T, D>::getNeighbors() const
+    const std::vector<const Node<T, D> *> &Node<T, D>::getNeighbors() const
     {
         return neighbors_;
     }
