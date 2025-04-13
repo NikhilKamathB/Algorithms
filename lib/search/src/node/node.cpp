@@ -46,7 +46,20 @@ namespace search
     template <typename T, unsigned int D>
     void Node<T, D>::addNeighbor(const Node<T, D> &neighbor)
     {
-        neighbors_.push_back(&neighbor);
+        neighbors_.emplace_back(&neighbor);
+    }
+
+    template <typename T, unsigned int D>
+    void Node<T, D>::addNeighbor(const Node<T, D> *neighbor)
+    {
+        if (neighbor != nullptr)
+        {
+            neighbors_.emplace_back(neighbor);
+        }
+        else
+        {
+            PLOGW << "Attempted to add a null neighbor to node: " << name_ << " - skipping.";
+        }
     }
 
     template <typename T, unsigned int D>

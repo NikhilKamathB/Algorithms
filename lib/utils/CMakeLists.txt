@@ -11,7 +11,7 @@ project(${PROJECT_NAME}
     DESCRIPTION "Utils library provides various utility functions, classes and constants.")
 message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}")
 
-# Utils
+# ----------------------------------- Interfaces ---------------------------------------
 add_library(utils INTERFACE)
 target_include_directories(utils
     INTERFACE

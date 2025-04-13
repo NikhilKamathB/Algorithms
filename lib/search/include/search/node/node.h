@@ -99,9 +99,15 @@ namespace search
 
         /**
          * @brief Add a neighbor to the node.
-         * @param neighbor neighbor to add.
+         * @param neighbor neighbor to add - a reference to a Node object.
          */
         void addNeighbor(const Node<T, D> &neighbor);
+
+        /**
+         * @brief Add a neighbor to the node.
+         * @param neighbor neighbor to add - a pointer to a Node object.
+         */
+        void addNeighbor(const Node<T, D> *neighbor);
 
         /**
          * @brief Set the name of the node.

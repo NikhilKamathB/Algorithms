@@ -16,6 +16,7 @@ if (NOT TARGET utils)
     add_subdirectory(../utils ${CMAKE_CURRENT_BINARY_DIR}/utils)
 endif()
 
+# ---------------------------------- Hasher ---------------------------------------
 # Math hasher
 add_library(math_hasher
     SHARED
@@ -32,6 +33,7 @@ target_link_libraries(math_hasher
         utils
 )
 
+# ---------------------------------- Interfaces ---------------------------------------
 # Math
 add_library(math
     INTERFACE

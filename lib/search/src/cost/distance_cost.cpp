@@ -8,7 +8,7 @@
 namespace search
 {
     template <typename T, unsigned int D>
-    DistanceCost<T, D>::DistanceCost(utils::DistanceMetric distance_metric)
+    DistanceCost<T, D>::DistanceCost(DistanceMetric distance_metric)
         : distance_metric_(distance_metric)
     {
         PLOGD << "Initializing DistanceCost with distance metric: " << distance_metric_ << " (" << static_cast<uint8_t>(distance_metric_) << ")";
@@ -33,13 +33,22 @@ namespace search
         PLOGD << "Calculating cost from node: " << from_node.getName() << " to node: " << to_node.getName();
         switch (distance_metric_)
         {
-        case utils::DistanceMetric::EUCLIDEAN:
+        case DistanceMetric::EUCLIDEAN:
+            PLOGD << "Using Euclidean distance metric";
             return (from_node.getNodeValue().value - to_node.getNodeValue().value).norm();
-        case utils::DistanceMetric::MANHATTAN:
+        case DistanceMetric::MANHATTAN:
+            PLOGD << "Using Manhattan distance metric";
             return (from_node.getNodeValue().value - to_node.getNodeValue().value).template lpNorm<1>();
         default:
-            return (from_node.getNodeValue().value - to_node.getNodeValue().value).norm();
+            PLOGE << "Unknown distance metric: " << static_cast<uint8_t>(distance_metric_);
+            throw std::invalid_argument("Unknown distance metric");
         }
+    }
+
+    template <typename T, unsigned int D>
+    std::ostream &operator<<(std::ostream &os, const DistanceCost<T, D> &cost)
+    {
+        os << "DistanceCost[DistanceMetric: " << static_cast<uint8_t>(cost.getDistanceMetric()) << "]";
     }
 
 } // namespace search

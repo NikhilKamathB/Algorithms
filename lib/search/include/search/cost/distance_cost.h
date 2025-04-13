@@ -49,7 +49,7 @@ namespace search
         const DistanceMetric getDistanceMetric() const;
 
         /**
-         * @brief Get the const of going from node A to node B (`from_node` to `to_node`).
+         * @brief Get the cost of going from node A to node B (`from_node` to `to_node`).
          * The cost is calculated using the distance metrics.
          * @param from_node node A.
          * @param to_node node B.
@@ -57,6 +57,14 @@ namespace search
          */
         const double getCost(const Node<T, D> &from_node,
                              const Node<T, D> &to_node) const override;
+
+        /**
+         * @brief << operator - function for streaming the DistanceCost to an output stream.
+         * @param os output stream.
+         * @param cost cost to stream.
+         * @return std::ostream& output stream.
+         */
+        friend std::ostream &operator<<(std::ostream &os, const DistanceCost<T, D> &cost);
     };
 
 } // namespace search

@@ -21,24 +21,62 @@ namespace search
     class Graph : protected Environment<T, D>
     {
 
-    private:
-        // Number of nodes in the graph
-        std::size_t num_nodes_;
+        using SearchAlgorithm = utils::SearchAlgorithm;
 
+    private:
         // Edges between nodes
         std::vector<std::pair<std::size_t, std::size_t>> edges_;
 
-        // Enable bidirectional edges
-        bool bidirectional_;
-
         // List of nodes
-        std::vector<std::shared_ptr<Node<T, D>>> nodes_;
+        std::vector<Node<T, D> *> nodes_;
+
+        // List of cost functions
+        std::vector<const Cost<T, D> *> cost_functions_;
+
+        // Function to create connected graph
+        void _createConnectedGraph();
 
     public:
+
+        /**
+         * @brief Construct a new Graph object.
+         * @param nodes list of nodes in the graph.
+         * @param edges list of edges in the graph.
+         * @param cost_functions list of cost functions for the graph.
+         */
+        Graph(const std::vector<Node<T, D> *> &nodes,
+              const std::vector<std::pair<std::size_t, std::size_t>> &edges,
+              const std::vector<const Cost<T, D> *> &cost_functions);
+         
         /**
          * @brief Destructor for the Graph class.
          */
-        ~Graph() = default;
+        ~Graph();
+
+        /**
+         * @brief Initialize the graph.
+         */
+        void initialize() override;
+
+        /** 
+         * @brief Perform space search and return paths from start to goal for a graph based environment.
+         * @param start_node The starting node.
+         * @param goal_node The goal node.
+         * @param search_algorithm The search algorithm to use (DFS, BFS, UCS, A_STAR) - default is DFS.
+         * @return A vector of vectors of pairs representing the paths from start to goal along with their step costs.
+         */
+        const std::vector<std::vector<std::pair<const Node<T, D> *, double>>> search(
+            const Node<T, D> &start_node,
+            const Node<T, D> &goal_node,
+            SearchAlgorithm search_algorithm = SearchAlgorithm::DFS) const override;
+
+        /**
+         * @brief << operator - function for streaming the Graph to an output stream.
+         * @param os output stream.
+         * @param env environment to stream.
+         * @return std::ostream& output stream.
+         */
+        friend std::ostream &operator<<(std::ostream &os, const Graph<T, D> &env);
     };
 
 } // namespace search

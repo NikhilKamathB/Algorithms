@@ -25,7 +25,43 @@ if (NOT TARGET math)
     add_subdirectory(../math ${CMAKE_CURRENT_BINARY_DIR}/math)
 endif()
 
+# ---------------------------------- Node ---------------------------------------
+# Search - Node
+add_library(search_node
+    SHARED
+        src/node/node.cpp
+)
+target_include_directories(search_node
+    PRIVATE
+        include
+        ${EIGEN3_INCLUDE_DIR}
+        ${Boost_INCLUDE_DIRS}
+)
+target_link_libraries(search_node
+    PRIVATE
+        math
+        plog
+)
+
 # ---------------------------------- Cost ---------------------------------------
+# Search - DefaultCost
+add_library(search_default_cost
+    SHARED
+        src/cost/default_cost.cpp
+)
+target_include_directories(search_default_cost
+    PRIVATE
+        include
+        ${EIGEN3_INCLUDE_DIR}
+        ${Boost_INCLUDE_DIRS}
+)
+target_link_libraries(search_default_cost
+    PRIVATE
+        utils
+        math
+        plog
+)
+
 # Search - DistanceCost
 add_library(search_distance_cost
     SHARED
@@ -39,8 +75,8 @@ target_include_directories(search_distance_cost
 )
 target_link_libraries(search_distance_cost
     PRIVATE
-        math
         utils
+        math
         plog
 )
 
@@ -57,28 +93,30 @@ target_include_directories(search_aggregate_cost
 )
 target_link_libraries(search_aggregate_cost
     PRIVATE
-        math
         utils
+        math
         plog
 )
 
-# ---------------------------------- Node ---------------------------------------
-# Search - Node
-add_library(search_node
+# ---------------------------------- Environment ---------------------------------------
+# Search - Graph based environment
+add_library(search_graph_environment
     SHARED
-        src/node/node.cpp
+        src/environment/graph.cpp
 )
-target_include_directories(search_node
+target_include_directories(search_graph_environment
     PRIVATE
         include
         ${EIGEN3_INCLUDE_DIR}
         ${Boost_INCLUDE_DIRS}
 )
-target_link_libraries(search_node
+target_link_libraries(search_graph_environment
     PRIVATE
         math
         utils
         plog
+        search_node
+        search_default_cost
+        search_distance_cost
+        search_aggregate_cost
 )
-
-# ---------------------------------- Environment ---------------------------------------

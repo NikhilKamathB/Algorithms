@@ -6,8 +6,6 @@
  * @brief Abstract class for representing the cost of taking an action from this node to another. This is mostly a pure virtual class and must be inherited to define a custom cost.
  */
 
-#include <cstdint>
-#include <stdexcept>
 #include <plog/Log.h>
 #include <utils/constants.h>
 #include <search/node/node.h>

@@ -30,7 +30,7 @@ namespace search
 
     public:
         /**
-         * @brief Construct a new aggregateCost object.
+         * @brief Construct a new AggregateCost object.
          * @tparam C Cost function type.
          * @param cost_functions list of cost functions to combine.
          */
@@ -39,7 +39,7 @@ namespace search
         AggregateCost(const C &...cost_functions);
 
         /**
-         * @brief Construct a new aggregateCost object.
+         * @brief Construct a new AggregateCost object.
          * @tparam C Cost function type.
          * @param weights list of weights for each cost function.
          * @param cost_functions list of cost functions to combine.
@@ -49,7 +49,7 @@ namespace search
         AggregateCost(const std::vector<double> &weights, const C &...cost_functions);
 
         /**
-         * @brief Destructor for the aggregateCost class.
+         * @brief Destructor for the AggregateCost class.
          */
         ~AggregateCost();
 
@@ -61,6 +61,14 @@ namespace search
          */
         const double getCost(const Node<T, D> &from_node,
                              const Node<T, D> &to_node) const override;
+
+        /**
+         * @brief << operator - function for streaming the AggregateCost to an output stream.
+         * @param os output stream.
+         * @param cost cost to stream.
+         * @return std::ostream& output stream.
+         */
+        friend std::ostream &operator<<(std::ostream &os, const AggregateCost<T, D> &cost);
     };
 
 } // namespace search

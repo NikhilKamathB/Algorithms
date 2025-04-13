@@ -17,6 +17,15 @@ namespace utils
         MANHATTAN
     };
 
+    // Search Algorithms
+    enum class SearchAlgorithm : uint8_t
+    {
+        DFS,
+        BFS,
+        UCS,
+        A_STAR
+    };
+
     // Floating point precision
     static constexpr double floating_point_precision{1e-6};
 

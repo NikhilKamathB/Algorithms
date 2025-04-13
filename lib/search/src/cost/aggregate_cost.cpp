@@ -51,4 +51,16 @@ namespace search
         return total_cost;
     }
 
+    template <typename T, unsigned int D>
+    std::ostream &operator<<(std::ostream &os, const AggregateCost<T, D> &cost) {
+        os << "AggregateCost[";
+        std::vector<const Cost<T, D> *> cost_functions_;
+        for (const Cost<T, D> *cost_function : cost_functions_)
+        {
+            os << *cost_function << ", ";
+        }
+        os << "]";
+        return os;
+    }
+
 } // namespace search

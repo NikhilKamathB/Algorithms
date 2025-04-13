@@ -7,6 +7,8 @@
  */
 
 #include <plog/Log.h>
+#include <utils/constants.h>
+#include <search/cost/cost.h>
 #include <search/node/node.h>
 
 namespace search
@@ -22,6 +24,8 @@ namespace search
     class Environment
     {
 
+        using SearchAlgorithm = utils::SearchAlgorithm;
+
     public:
         /**
          * @brief Destructor for the Environment class.
@@ -29,14 +33,21 @@ namespace search
         virtual ~Environment() = default;
 
         /**
+         * @brief Initialize the environment.
+         */
+        virtual void initialize() = 0;
+
+        /**
          * @brief Perform space search and return paths from start to goal.
          * @param start_node The starting node.
          * @param goal_node The goal node.
+         * @param search_algorithm The search algorithm to use (DFS, BFS, UCS, A_STAR) - default is DFS.
          * @return A vector of vectors of pairs representing the paths from start to goal along with their step costs.
          */
-        virtual const std::vector<std::vector<std::pair<Node<T, D> *, double>>> search(
+        virtual const std::vector<std::vector<std::pair<const Node<T, D> *, double>>> search(
             const Node<T, D> &start_node,
-            const Node<T, D> &goal_node) = 0;
+            const Node<T, D> &goal_node,
+            SearchAlgorithm search_algorithm = SearchAlgorithm::DFS) const = 0;
     };
 
 } // namespace search
