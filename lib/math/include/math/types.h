@@ -3,7 +3,7 @@
 
 /**
  * @file math.h
- * @brief Contains the declaration of the data structures that can be used in mathematical computations (header only file).
+ * @brief Contains the data structures that can be used in mathematical computations.
  */
 
 #include <Eigen/Dense>

@@ -6,8 +6,6 @@
  * @brief Abstract class for representing the cost of taking an action from this node to another. This is mostly a pure virtual class and must be inherited to define a custom cost.
  */
 
-#include <plog/Log.h>
-#include <utils/constants.h>
 #include <search/node/node.h>
 
 namespace search
@@ -25,6 +23,11 @@ namespace search
 
     public:
         /**
+         * @brief Construct a new Cost object.
+         */
+        Cost() = default;
+        
+        /**
          * Destructor for the Cost class.
          */
         virtual ~Cost() = default;
@@ -35,7 +38,7 @@ namespace search
          * @param to_node node B.
          * @return const double cost of going `from_node` to `to_node`.
          */
-        virtual const double getCost(const Node<T, D> &from_node,
+        virtual const double get_cost(const Node<T, D> &from_node,
                                      const Node<T, D> &to_node) const = 0;
     };
 

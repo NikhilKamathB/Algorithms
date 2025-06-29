@@ -3,7 +3,7 @@
 
 /**
  * @file node.h
- * @brief Contains the declaration of the `Node` type.
+ * @brief Contains the base node class entity in the state space search.
  */
 
 #include <plog/Log.h>
@@ -36,7 +36,11 @@ namespace search
          * @param node_value node value to stream.
          * @return std::ostream& output stream.
          */
-        friend std::ostream &operator<<(std::ostream &os, const NodeValue<T, D> &node_value);
+        friend std::ostream &operator<<(std::ostream &os, const NodeValue<T, D> &node_value)
+        {
+            os << "NodeValue: " << node_value.value;
+            return os;
+        }
     };
 
     /**
@@ -63,7 +67,7 @@ namespace search
         std::vector<const Node<T, D> *> neighbors_;
 
         // UUID generator
-        static boost::uuids::random_generator uuid_generator_;
+        inline static boost::uuids::random_generator uuid_generator_;
 
     public:
         /**
@@ -72,48 +76,89 @@ namespace search
          * @param name name of the node - default is an empty string.
          */
         Node(const NodeValue<T, D> &node_value,
-             const std::string &name = "");
+             const std::string &name = "")
+            : uuid_(uuid_generator_()),
+              node_value_(node_value)
+        {
+            if (name.empty())
+            {
+                name_ = boost::uuids::to_string(uuid_);
+            }
+            else
+            {
+                name_ = name;
+            }
+            PLOGD << "Initializing Node object with name: " << name_;
+        }
 
         /**
          * @brief Destroy the Node object.
          */
-        ~Node();
+        ~Node()
+        {
+            PLOGD << "Destroying Node object: " << name_;
+        }
 
         /**
          * @brief Get the name of the node.
          * @return const std::string& name of the node.
          */
-        const std::string &getName() const;
+        const std::string &get_name() const
+        {
+            return name_;
+        }
 
         /**
          * @brief Get neighbors of the node.
          * @return const std::vector<Node<T, D>*>& neighbors of the node.
          */
-        const std::vector<const Node<T, D> *> &getNeighbors() const;
+        const std::vector<const Node<T, D> *> &get_neighbors() const
+        {
+            return neighbors_;
+        }
 
         /**
          * @brief Get the value of the node.
          * @return const NodeValue<T, D>& value of the node.
          */
-        const NodeValue<T, D> &getNodeValue() const;
+        const NodeValue<T, D> &get_node_value() const
+        {
+            return node_value_;
+        }
 
         /**
          * @brief Add a neighbor to the node.
          * @param neighbor neighbor to add - a reference to a Node object.
          */
-        void addNeighbor(const Node<T, D> &neighbor);
+        void add_neighbor(const Node<T, D> &neighbor)
+        {
+            neighbors_.emplace_back(&neighbor);
+        }
 
         /**
          * @brief Add a neighbor to the node.
          * @param neighbor neighbor to add - a pointer to a Node object.
          */
-        void addNeighbor(const Node<T, D> *neighbor);
+        void add_neighbor(const Node<T, D> *neighbor)
+        {
+            if (neighbor != nullptr)
+            {
+                neighbors_.emplace_back(neighbor);
+            }
+            else
+            {
+                PLOGW << "Attempted to add a null neighbor to node: " << name_ << " - skipping";
+            }
+        }
 
         /**
          * @brief Set the name of the node.
          * @param name name of the node.
          */
-        void setName(const std::string &name);
+        void set_name(const std::string &name)
+        {
+            name_ = name;
+        }
 
         /**
          * @brief << operator - a friend function for streaming the Node to an output stream.
@@ -121,7 +166,18 @@ namespace search
          * @param node node to stream.
          * @return std::ostream& output stream.
          */
-        friend std::ostream &operator<<(std::ostream &os, const Node<T, D> &node);
+        friend std::ostream &operator<<(std::ostream &os, const Node<T, D> &node)
+        {
+            os << "Node[" << node.name_ << "]: ";
+            os << node.node_value_ << std::endl;
+            os << "Neighbors[";
+            for (const Node<T, D> *neighbor : node.neighbors_)
+            {
+                os << neighbor->name_ << ", ";
+            }
+            os << "]" << std::endl;
+            return os;
+        }
 
         /**
          * @brief == operator - a friend function overload for comparing two nodes.
@@ -129,7 +185,21 @@ namespace search
          * @param rhs right hand side node.
          * @return true if the nodes are equal, false otherwise.
          */
-        friend const bool operator==(const Node<T, D> &lhs, const Node<T, D> &rhs);
+        friend const bool operator==(const Node<T, D> &lhs, const Node<T, D> &rhs)
+        {
+            return lhs.uuid_ == rhs.uuid_;
+        }
+
+        /**
+         * @brief != operator - a friend function overload for comparing two nodes.
+         * @param lhs left hand side node.
+         * @param rhs right hand side node.
+         * @return true if the nodes are not equal, false otherwise.
+         */
+        friend const bool operator!=(const Node<T, D> &lhs, const Node<T, D> &rhs)
+        {
+            return !(lhs == rhs);
+        }
     };
 
 } // namespace search

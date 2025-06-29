@@ -3,7 +3,7 @@
 
 /**
  * @file constants.h
- * @brief Contains the declaration of the constants used in the library (header only file).
+ * @brief Contains constants which will be used project wide.
  */
 
 #include <cstdint>

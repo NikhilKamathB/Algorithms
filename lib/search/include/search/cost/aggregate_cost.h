@@ -3,9 +3,10 @@
 
 /**
  * @file aggregate_cost.h
- * @brief Contains the declaration of the `AggregateCost` class. This class is used to combine multiple cost functions into a single cost function.
+ * @brief This class aggregates multiple cost functions into one.
  */
 
+#include <plog/Log.h>
 #include <search/cost/cost.h>
 
 namespace search
@@ -18,7 +19,7 @@ namespace search
      * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
-    class AggregateCost : protected Cost<T, D>
+    class AggregateCost : public Cost<T, D>
     {
 
     private:
@@ -36,7 +37,12 @@ namespace search
          */
         template <typename... C>
             requires(std::derived_from<C, Cost<T, D>> && ...)
-        AggregateCost(const C &...cost_functions);
+        AggregateCost(const C &...cost_functions)
+            : cost_functions_{&cost_functions...}
+        {
+            PLOGD << "Initializing aggregateCost with " << sizeof...(cost_functions) << " cost functions and equally distributed weights";
+            weights_.resize(cost_functions_.size(), 1.0);
+        }
 
         /**
          * @brief Construct a new AggregateCost object.
@@ -46,12 +52,25 @@ namespace search
          */
         template <typename... C>
             requires(std::derived_from<C, Cost<T, D>> && ...)
-        AggregateCost(const std::vector<double> &weights, const C &...cost_functions);
+        AggregateCost(const std::vector<double> &weights, const C &...cost_functions)
+        {
+            PLOGD << "Initializing aggregateCost with " << sizeof...(cost_functions) << " cost functions and " << weights.size() << " weights";
+            if (weights.size() != sizeof...(cost_functions))
+            {
+                PLOGE << "Weights size does not match the number of cost functions passed";
+                throw std::invalid_argument("Weights size must match the number of cost functions passed");
+            }
+            weights_ = weights;
+            cost_functions_ = {&cost_functions...};
+        }
 
         /**
          * @brief Destructor for the AggregateCost class.
          */
-        ~AggregateCost();
+        ~AggregateCost()
+        {
+            PLOGD << "Destroying AggregateCost object";
+        }
 
         /**
          * @brief Get the const of going from node A to node B (`from_node` to `to_node`).
@@ -59,8 +78,17 @@ namespace search
          * @param to_node node B.
          * @return const double cost of going `from_node` to `to_node`.
          */
-        const double getCost(const Node<T, D> &from_node,
-                             const Node<T, D> &to_node) const override;
+        const double get_cost(const Node<T, D> &from_node,
+                              const Node<T, D> &to_node) const override
+        {
+            PLOGD << "Computing aggregate cost from node " << from_node.get_name() << " to node " << to_node.get_name();
+            double total_cost = 0.0;
+            for (std::size_t idx = 0; idx < cost_functions_.size(); ++idx)
+            {
+                total_cost += weights_[idx] * cost_functions_[idx]->get_cost(from_node, to_node);
+            }
+            return total_cost;
+        }
 
         /**
          * @brief << operator - function for streaming the AggregateCost to an output stream.
@@ -68,7 +96,17 @@ namespace search
          * @param cost cost to stream.
          * @return std::ostream& output stream.
          */
-        friend std::ostream &operator<<(std::ostream &os, const AggregateCost<T, D> &cost);
+        friend std::ostream &operator<<(std::ostream &os, const AggregateCost<T, D> &cost)
+        {
+            os << "AggregateCost[";
+            std::vector<const Cost<T, D> *> cost_functions_;
+            for (const Cost<T, D> *cost_function : cost_functions_)
+            {
+                os << *cost_function << ", ";
+            }
+            os << "]";
+            return os;
+        }
     };
 
 } // namespace search

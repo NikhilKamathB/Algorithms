@@ -3,9 +3,10 @@
 
 /**
  * @file default_cost.h
- * @brief Contains the declaration of the `DefaultCost` class. Entends the `Cost` class by calculating the distance between two nodes - returns mentioned default cost.
+ * @brief Use default cost class to induce a constant cost for all actions in the search space.
  */
 
+#include <plog/Log.h>
 #include <search/cost/cost.h>
 
 namespace search
@@ -18,7 +19,7 @@ namespace search
      * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
-    class DefaultCost : protected Cost<T, D>
+    class DefaultCost : public Cost<T, D>
     {
 
     private:
@@ -30,12 +31,19 @@ namespace search
          * @brief Construct a new DefaultCost object.
          * @param default_value_ default value.
          */
-        DefaultCost(const double &default_value = 1.0);
+        DefaultCost(const double default_value = 1.0)
+            : default_value_(default_value)
+        {
+            PLOGD << "Initializing DefaultCost with default value: " << default_value_;
+        }
 
         /**
          * @brief Destroy the DefaultCost object.
          */
-        ~DefaultCost();
+        ~DefaultCost()
+        {
+            PLOGD << "Destroying DefaultCost object";
+        }
 
         /**
          * @brief Get the default cost of going from node A to node B (`from_node` to `to_node`).
@@ -43,8 +51,12 @@ namespace search
          * @param to_node node B.
          * @return const default double cost of going `from_node` to `to_node`.
          */
-        const double getCost(const Node<T, D> &from_node,
-                             const Node<T, D> &to_node) const override;
+        const double get_cost(const Node<T, D> &from_node,
+                              const Node<T, D> &to_node) const override
+        {
+            PLOGD << "Returning default cost from node: " << from_node.get_name() << " to node: " << to_node.get_name();
+            return default_value_;
+        }
 
         /**
          * @brief << operator - function for streaming the DefaultCost to an output stream.
@@ -52,7 +64,11 @@ namespace search
          * @param cost cost to stream.
          * @return std::ostream& output stream.
          */
-        friend std::ostream &operator<<(std::ostream &os, const DefaultCost<T, D> &cost);
+        friend std::ostream &operator<<(std::ostream &os, const DefaultCost<T, D> &cost)
+        {
+            os << "DefaultCost[DefaultValue: " << cost.default_value_ << "]";
+            return os;
+        }
     };
 
 } // namespace search

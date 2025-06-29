@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "search-lib",
+  "version-string": "1.0.0",
+  "description": "Searchh lib is a package that enables state space search using various algorithms.",
+  "dependencies": [
+    "boost-container-hash",
+    "boost-uuid",
+    "eigen3",
+    "gtest",
+    "plog"
+  ]
+}

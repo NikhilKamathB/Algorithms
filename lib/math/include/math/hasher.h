@@ -3,7 +3,7 @@
 
 /**
  * @file hasher.h
- * @brief Contains the declaration of the hashers for math objects.
+ * @brief Math objects hasher warehouse.
  */
 
 #include <boost/container_hash/hash.hpp>
@@ -29,7 +29,30 @@ namespace math
          * @param seed seed value for the hash - seed will be alterd by the boost library - default is 42.
          * @return std::size_t - hash value of the matrix.
          */
-        std::size_t operator()(const Matrix<T, R, C> &matrix, std::size_t seed = 42) const noexcept;
+        std::size_t operator()(const Matrix<T, R, C> &matrix, std::size_t seed = 42) const
+        {
+            if constexpr (std::is_floating_point_v<T>)
+            {
+                for (unsigned int r = 0; r < R; ++r)
+                {
+                    for (unsigned int c = 0; c < C; ++c)
+                    {
+                        boost::hash_combine(seed, static_cast<long long int>(matrix(r, c) / utils::floating_point_precision));
+                    }
+                }
+            }
+            else
+            {
+                for (unsigned int r = 0; r < R; ++r)
+                {
+                    for (unsigned int c = 0; c < C; ++c)
+                    {
+                        boost::hash_combine(seed, matrix(r, c));
+                    }
+                }
+            }
+            return seed;
+        }
     };
 
     /**

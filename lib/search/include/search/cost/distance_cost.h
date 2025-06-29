@@ -3,9 +3,11 @@
 
 /**
  * @file distance_cost.h
- * @brief Contains the declaration of the `DistanceCost` class. Entends the `Cost` class by calculating the distance between two nodes.
+ * @brief Computes distance-based costs between nodes in a search space.
  */
 
+#include <plog/Log.h>
+#include <utils/constants.h>
 #include <search/cost/cost.h>
 
 namespace search
@@ -18,7 +20,7 @@ namespace search
      * @tparam D Dimension.
      */
     template <typename T, unsigned int D>
-    class DistanceCost : protected Cost<T, D>
+    class DistanceCost : public Cost<T, D>
     {
 
         using DistanceMetric = utils::DistanceMetric;
@@ -35,18 +37,28 @@ namespace search
          * @brief Construct a new DistanceCost object.
          * @param distance_value distance value.
          */
-        DistanceCost(DistanceMetric distance_metric = DistanceMetric::EUCLIDEAN);
+        DistanceCost(DistanceMetric distance_metric = DistanceMetric::EUCLIDEAN)
+            : distance_metric_(distance_metric)
+        {
+            PLOGD << "Initializing DistanceCost with distance metric: " << distance_metric_ << " (" << static_cast<uint8_t>(distance_metric_) << ")";
+        }
 
         /**
          * @brief Destroy the DistanceCost object.
          */
-        ~DistanceCost();
+        ~DistanceCost()
+        {
+            PLOGD << "Destroying DistanceCost object";
+        }
 
         /**
          * @brief Get the distance metric used to calculate the cost.
          * @return const DistanceMetric distance metric item.
          */
-        const DistanceMetric getDistanceMetric() const;
+        const DistanceMetric get_distance_metric() const
+        {
+            return distance_metric_;
+        }
 
         /**
          * @brief Get the cost of going from node A to node B (`from_node` to `to_node`).
@@ -55,8 +67,23 @@ namespace search
          * @param to_node node B.
          * @return const double cost of going `from_node` to `to_node`.
          */
-        const double getCost(const Node<T, D> &from_node,
-                             const Node<T, D> &to_node) const override;
+        const double get_cost(const Node<T, D> &from_node,
+                              const Node<T, D> &to_node) const override
+        {
+            PLOGD << "Calculating distance based cost from node: " << from_node.get_name() << " to node: " << to_node.get_name();
+            switch (distance_metric_)
+            {
+            case DistanceMetric::EUCLIDEAN:
+                PLOGD << "Using Euclidean distance metric";
+                return (from_node.getNodeValue().value - to_node.getNodeValue().value).norm();
+            case DistanceMetric::MANHATTAN:
+                PLOGD << "Using Manhattan distance metric";
+                return (from_node.getNodeValue().value - to_node.getNodeValue().value).template lpNorm<1>();
+            default:
+                PLOGE << "Unknown distance metric: " << static_cast<uint8_t>(distance_metric_);
+                throw std::invalid_argument("Unknown distance metric");
+            }
+        }
 
         /**
          * @brief << operator - function for streaming the DistanceCost to an output stream.
@@ -64,7 +91,10 @@ namespace search
          * @param cost cost to stream.
          * @return std::ostream& output stream.
          */
-        friend std::ostream &operator<<(std::ostream &os, const DistanceCost<T, D> &cost);
+        friend std::ostream &operator<<(std::ostream &os, const DistanceCost<T, D> &cost)
+        {
+            os << "DistanceCost[DistanceMetric: " << static_cast<uint8_t>(cost.getDistanceMetric()) << "]";
+        }
     };
 
 } // namespace search

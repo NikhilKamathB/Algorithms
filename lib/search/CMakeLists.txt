@@ -6,117 +6,55 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/config.cmake)
 
 # Project metadata
 set(PROJECT_NAME search)
-project(${PROJECT_NAME} VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
+project(${PROJECT_NAME}
+    VERSION 1.0.0
     DESCRIPTION "Search library enables efficient searching using various algorithms in a defined space.")
-message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}")
+message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}...")
+
+option(BUILD_TEST_SEARCH "Build search test" ON)
+set_property(GLOBAL PROPERTY BUILD_SEARCH_TEST ${BUILD_SEARCH_TEST})
 
 # Include third party libraries
-if (NOT TARGET plog)
-    add_subdirectory(../../third_party/plog ${CMAKE_CURRENT_BINARY_DIR}/plog)
-endif()
-
-# Include utils library
+# Custom libraries
 if (NOT TARGET utils)
     add_subdirectory(../utils ${CMAKE_CURRENT_BINARY_DIR}/utils)
 endif()
-
-# Include utils library
 if (NOT TARGET math)
     add_subdirectory(../math ${CMAKE_CURRENT_BINARY_DIR}/math)
 endif()
+# Open-sourced libraries
+find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(plog REQUIRED)
+if (BUILD_TEST_SEARCH)
+    find_package(GTest REQUIRED)
+endif()
 
-# ---------------------------------- Node ---------------------------------------
-# Search - Node
-add_library(search_node
-    SHARED
-        src/node/node.cpp
+# ---------------------------------- Interfaces ---------------------------------------
+# Search
+add_library(search
+    INTERFACE
 )
-target_include_directories(search_node
-    PRIVATE
+target_include_directories(search
+    INTERFACE
         include
-        ${EIGEN3_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIRS}
 )
-target_link_libraries(search_node
-    PRIVATE
-        math
-        plog
-)
-
-# ---------------------------------- Cost ---------------------------------------
-# Search - DefaultCost
-add_library(search_default_cost
-    SHARED
-        src/cost/default_cost.cpp
-)
-target_include_directories(search_default_cost
-    PRIVATE
-        include
-        ${EIGEN3_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIRS}
-)
-target_link_libraries(search_default_cost
-    PRIVATE
+target_link_libraries(search
+    INTERFACE
         utils
         math
-        plog
+        Eigen3::Eigen
+        Boost::boost
+        plog::plog
 )
 
-# Search - DistanceCost
-add_library(search_distance_cost
-    SHARED
-        src/cost/distance_cost.cpp
-)
-target_include_directories(search_distance_cost
-    PRIVATE
-        include
-        ${EIGEN3_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIRS}
-)
-target_link_libraries(search_distance_cost
-    PRIVATE
-        utils
-        math
-        plog
-)
+# ------------------------------------- Test ------------------------------------------
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TEST_SEARCH)
+    message(STATUS "Building tests for ${PROJECT_NAME}...")
+    include(CTest)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
-# Search - AggregateCost
-add_library(search_aggregate_cost
-    SHARED
-        src/cost/aggregate_cost.cpp
-)
-target_include_directories(search_aggregate_cost
-    PRIVATE
-        include
-        ${EIGEN3_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIRS}
-)
-target_link_libraries(search_aggregate_cost
-    PRIVATE
-        utils
-        math
-        plog
-)
-
-# ---------------------------------- Environment ---------------------------------------
-# Search - Graph based environment
-add_library(search_graph_environment
-    SHARED
-        src/environment/graph.cpp
-)
-target_include_directories(search_graph_environment
-    PRIVATE
-        include
-        ${EIGEN3_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIRS}
-)
-target_link_libraries(search_graph_environment
-    PRIVATE
-        math
-        utils
-        plog
-        search_node
-        search_default_cost
-        search_distance_cost
-        search_aggregate_cost
-)
+# ---------------------------------- Confimation ---------------------------------------
+message(NOTICE "Configured: ${PROJECT_NAME} v${PROJECT_VERSION}")

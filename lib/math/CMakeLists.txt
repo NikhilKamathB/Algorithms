@@ -6,32 +6,20 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/config.cmake)
 
 # Project metadata
 set(PROJECT_NAME math)
-project(${PROJECT_NAME} 
-    VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
+project(${PROJECT_NAME}
+    VERSION 1.0.0
     DESCRIPTION "Math library with support for linear algebra, statistics, geometry, calculus, and more.")
-message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}")
+message(STATUS "Configuring project: ${PROJECT_NAME} v${PROJECT_VERSION}...")
 
-# Include utils library
+# Include third-party libraries
+# Custom libraries
 if (NOT TARGET utils)
     add_subdirectory(../utils ${CMAKE_CURRENT_BINARY_DIR}/utils)
 endif()
 
-# ---------------------------------- Hasher ---------------------------------------
-# Math hasher
-add_library(math_hasher
-    SHARED
-        src/hasher.cpp
-)
-target_include_directories(math_hasher
-    PRIVATE
-        include
-        ${EIGEN3_INCLUDE_DIR}
-        ${Boost_INCLUDE_DIRS}
-)
-target_link_libraries(math_hasher
-    PRIVATE
-        utils
-)
+# Open-sourced libraries
+find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 # ---------------------------------- Interfaces ---------------------------------------
 # Math
@@ -44,5 +32,10 @@ target_include_directories(math
 )
 target_link_libraries(math
     INTERFACE
-        math_hasher
+        utils
+        Eigen3::Eigen
+        Boost::boost
 )
+
+# ---------------------------------- Confimation ---------------------------------------
+message(NOTICE "Configured: ${PROJECT_NAME} v${PROJECT_VERSION}")
