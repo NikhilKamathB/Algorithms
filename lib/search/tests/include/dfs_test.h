@@ -44,7 +44,7 @@ namespace search
              */
             void SetUp() override
             {
-                // Initialize or set up resources needed for tests
+                // Initialize/set up resources needed for tests
                 DfsTestParameters props = GetParam();
                 // Make nodes
                 std::vector<std::unique_ptr<Node<T, D>>> nodes;
